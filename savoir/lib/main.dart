@@ -11,6 +11,7 @@ class Savoir extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(fontFamily: 'Newsreader'),
       home: Scaffold(),
     );
   }
