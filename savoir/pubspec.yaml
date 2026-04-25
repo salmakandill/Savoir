@@ -74,10 +74,10 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:
-  #   - family: Newsreader
+  #   - family: Schyler
   #     fonts:
-  #       - asset: assets\fonts\Newsreader\Newsreader-Italic-VariableFont_opsz,wght.ttf
-  #       - asset: assets\fonts\Newsreader\Newsreader-VariableFont_opsz,wght.ttf
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
