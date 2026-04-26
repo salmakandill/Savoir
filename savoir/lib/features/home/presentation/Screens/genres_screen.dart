@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:savoir/features/reading/presentation/widgets/custom_drawer.dart';
 import 'package:savoir/models/app_colors.dart';
 
 class GenresScreen extends StatefulWidget {
@@ -25,12 +26,19 @@ class _GenresScreenState extends State<GenresScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawer: CustomDrawer(),
         appBar: AppBar(
           backgroundColor: AppColors.background,
-          leading: IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.menu),
-            color: AppColors.iconsColor,
+          leading: Builder(
+            builder: (context) {
+              return IconButton(
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                icon: Icon(Icons.menu),
+                color: AppColors.iconsColor,
+              );
+            },
           ),
           actions: [
             IconButton(
