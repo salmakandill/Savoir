@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
-import 'package:savoir/features/home/presentation/Screens/genresScreen.dart';
-import 'package:savoir/features/home/presentation/Screens/homescreen.dart';
-import 'package:savoir/features/home/presentation/Screens/profileScreen.dart';
-import 'package:savoir/features/home/presentation/Screens/searchScreen.dart';
+import 'package:savoir/features/home/presentation/Screens/genres_screen.dart';
+import 'package:savoir/features/home/presentation/Screens/home_screen.dart';
+import 'package:savoir/features/home/presentation/Screens/profile_screen.dart';
+import 'package:savoir/features/home/presentation/Screens/search_screen.dart';
 import 'package:savoir/models/app_colors.dart';
 
-class Custombouttomnavbar extends StatelessWidget {
-  const Custombouttomnavbar({super.key});
+class CustomBouttomNavBar extends StatelessWidget {
+  const CustomBouttomNavBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +16,10 @@ class Custombouttomnavbar extends StatelessWidget {
         PersistentTabConfig(
           screen: HomeScreen(),
           item: ItemConfig(
-            icon: Icon(Icons.home),
-            iconSize: 40,
+            icon: Icon(Icons.local_library_outlined),
+            iconSize: 30,
             title: 'LIBRARY',
-            textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+            textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
             activeForegroundColor: AppColors.iconsColor,
             inactiveForegroundColor: Colors.grey,
           ),
@@ -27,10 +27,10 @@ class Custombouttomnavbar extends StatelessWidget {
         PersistentTabConfig(
           screen: GenresScreen(),
           item: ItemConfig(
-            icon: Icon(Icons.menu_book_rounded),
-            iconSize: 40,
+            icon: Icon(Icons.menu_book_sharp),
+            iconSize: 30,
             title: 'DISCOVER',
-            textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+            textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
             activeForegroundColor: AppColors.iconsColor,
             inactiveForegroundColor: Colors.grey,
           ),
@@ -39,20 +39,20 @@ class Custombouttomnavbar extends StatelessWidget {
           screen: SearchScreen(),
           item: ItemConfig(
             icon: Icon(Icons.search),
-            iconSize: 40,
+            iconSize: 30,
             title: 'SEARCH',
-            textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+            textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
             activeForegroundColor: AppColors.iconsColor,
             inactiveForegroundColor: Colors.grey,
           ),
         ),
         PersistentTabConfig(
-          screen: Profilescreen(),
+          screen: ProfileScreen(),
           item: ItemConfig(
-            icon: Icon(Icons.person),
-            iconSize: 40,
+            icon: Icon(Icons.person_outline),
+            iconSize: 30,
             title: 'PROFILE',
-            textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+            textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
             activeForegroundColor: AppColors.iconsColor,
             inactiveForegroundColor: Colors.grey,
           ),

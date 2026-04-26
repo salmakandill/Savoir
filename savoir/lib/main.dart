@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:savoir/features/home/presentation/widgets/customBouttomNavbar.dart';
+import 'package:savoir/features/home/presentation/widgets/custom_bouttom_navbar.dart';
 
 void main() {
   runApp(Savoir());
@@ -13,7 +13,7 @@ class Savoir extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Newsreader'),
-      home: Custombouttomnavbar()
+      home: CustomBouttomNavBar()
     );
   }
 }
