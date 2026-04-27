@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:savoir/features/authontication/prasentation/screens/login_screen.dart';
+import 'package:savoir/features/authontication/prasentation/screens/sign_up_screen.dart';
 import 'package:savoir/features/home/presentation/widgets/custom_bouttom_navbar.dart';
+
 
 void main() {
   runApp(Savoir());
@@ -13,7 +16,7 @@ class Savoir extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Newsreader'),
-      home: CustomBouttomNavBar()
+      home:SignUpScreen()
     );
   }
 }
