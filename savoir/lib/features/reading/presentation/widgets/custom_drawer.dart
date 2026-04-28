@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:savoir/features/reading/presentation/screens/reading_list.dart';
 import 'package:savoir/features/reading/presentation/widgets/custom_drawer_list_taile.dart';
 import 'package:savoir/models/app_colors.dart';
 
@@ -76,7 +77,12 @@ class CustomDrawer extends StatelessWidget {
                 CustomDrawerListTaile(
                   title: 'My List',
                   icon: Icons.bookmark_border,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ReadingList()),
+                    );
+                  },
                 ),
                 CustomDrawerListTaile(
                   title: 'Favorites',
@@ -89,6 +95,11 @@ class CustomDrawer extends StatelessWidget {
                   onTap: () {},
                 ),
                 SizedBox(height: 150),
+                CustomDrawerListTaile(
+                  title: 'Dark & Light Mood',
+                  icon: Icons.light_mode_outlined,
+                  onTap: () {},
+                ),
                 CustomDrawerListTaile(
                   title: 'Settings',
                   icon: Icons.settings,

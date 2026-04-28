@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:savoir/models/app_colors.dart';
 
 class CustomDrawerListTaile extends StatelessWidget {
-  CustomDrawerListTaile({
+ const CustomDrawerListTaile({
     super.key,
     required this.title,
     required this.icon,
@@ -10,7 +10,7 @@ class CustomDrawerListTaile extends StatelessWidget {
   });
   final String title;
   final IconData icon;
-  void Function()? onTap;
+  final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
     return Column(
