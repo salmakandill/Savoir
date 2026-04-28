@@ -51,7 +51,7 @@ class _MyListState extends State<MyList> {
           listname: book['name'],
           booknum: book['num'],
           title: book['title'],
-          author: 'J.K Rolling',
+          author: 'J.K Rowling',
           imageURL: 'assets/images/test.jfif',
           icon: book['icon'],
           iconcolor: book['color'],

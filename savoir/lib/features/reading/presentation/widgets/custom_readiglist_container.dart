@@ -74,7 +74,7 @@ class CustomReadiglistContainer extends StatelessWidget {
                         child: Image.asset(
                           imageURL,
                           fit: BoxFit.cover,
-                          height: 150,
+                          height: 160,
                         ),
                       ),
                       SizedBox(height: 12),

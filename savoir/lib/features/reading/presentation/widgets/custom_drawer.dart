@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:savoir/features/reading/presentation/screens/reading_list.dart';
 import 'package:savoir/features/reading/presentation/widgets/custom_drawer_list_taile.dart';
 import 'package:savoir/models/app_colors.dart';
 
@@ -16,6 +17,12 @@ class CustomDrawer extends StatelessWidget {
               padding: EdgeInsets.zero,
               children: [
                 DrawerHeader(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/drawer1.png'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -23,7 +30,8 @@ class CustomDrawer extends StatelessWidget {
                         onPressed: () {},
                         icon: Icon(
                           Icons.account_circle,
-                          color: AppColors.firsttextColor,
+                          color: Colors.brown,
+                          size: 45,
                         ),
                         iconSize: 35,
                       ),
@@ -31,7 +39,7 @@ class CustomDrawer extends StatelessWidget {
                       Text(
                         'Welcome, Reader!',
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 22,
                           fontWeight: FontWeight.w600,
                           color: AppColors.firsttextColor,
                         ),
@@ -43,7 +51,7 @@ class CustomDrawer extends StatelessWidget {
                 Text(
                   ' Explore',
                   style: TextStyle(
-                    fontSize: 17,
+                    fontSize: 20,
                     fontWeight: FontWeight.w600,
                     color: AppColors.firsttextColor,
                   ),
@@ -63,7 +71,7 @@ class CustomDrawer extends StatelessWidget {
                 Text(
                   ' Personal',
                   style: TextStyle(
-                    fontSize: 17,
+                    fontSize: 20,
                     fontWeight: FontWeight.w600,
                     color: AppColors.firsttextColor,
                   ),
@@ -86,9 +94,29 @@ class CustomDrawer extends StatelessWidget {
                 CustomDrawerListTaile(
                   title: 'Reading History',
                   icon: Icons.history,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ReadingList()),
+                    );
+                  },
+                ),
+
+                Divider(),
+                SizedBox(height: 10),
+                Text(
+                  ' Others',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.firsttextColor,
+                  ),
+                ),
+                CustomDrawerListTaile(
+                  title: 'Dark & Light Mood',
+                  icon: Icons.light_mode_outlined,
                   onTap: () {},
                 ),
-                SizedBox(height: 150),
                 CustomDrawerListTaile(
                   title: 'Settings',
                   icon: Icons.settings,

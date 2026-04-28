@@ -5,6 +5,6 @@ class DownloadsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Downloads'));
+    return Center(child: Text('No Books Downloaded Yet '));
   }
 }
