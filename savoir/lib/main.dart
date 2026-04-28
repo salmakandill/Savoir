@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:savoir/features/authontication/prasentation/screens/login_screen.dart';
-import 'package:savoir/features/authontication/prasentation/screens/sign_up_screen.dart';
-import 'package:savoir/features/home/presentation/widgets/custom_bouttom_navbar.dart';
-
+import 'views/onboarding_view.dart';
 
 void main() {
-  runApp(Savoir());
+  runApp(const SavoirApp());
 }
 
-class Savoir extends StatelessWidget {
-  const Savoir({super.key});
+class SavoirApp extends StatelessWidget {
+  const SavoirApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Savoir',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Newsreader'),
-      home:SignUpScreen()
+      theme: ThemeData(
+        fontFamily: 'Georgia',
+        scaffoldBackgroundColor: const Color(0xFFF5F0E8),
+      ),
+      home: const OnboardingView(),
     );
   }
 }
