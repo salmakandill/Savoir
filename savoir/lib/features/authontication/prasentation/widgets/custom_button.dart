@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 class CustomButton extends StatelessWidget {
   final String buttonText;
   final VoidCallback onPressed;
-  final Color? backgroundColor; // ضيفنا السطر ده (علامة ? معناها إنه اختياري)
-
+  final Color? backgroundColor; 
   const CustomButton({
     super.key,
     required this.buttonText,
     required this.onPressed,
-    this.backgroundColor, // ضيفناه في الـ Constructor
+    this.backgroundColor, 
   });
 
   @override
