@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:savoir/features/reading/presentation/screens/reading_list.dart';
+import 'package:savoir/features/authentication/presentation/screens/splash_screen.dart';
 
 void main() {
   runApp(Savoir());
@@ -13,7 +13,7 @@ class Savoir extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Newsreader'),
-      home: ReadingList(),
+      home: SplashScreen(),
     );
   }
 }

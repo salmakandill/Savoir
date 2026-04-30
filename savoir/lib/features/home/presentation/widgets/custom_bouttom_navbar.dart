@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:savoir/features/home/presentation/Screens/genres_screen.dart';
 import 'package:savoir/features/home/presentation/Screens/home_screen.dart';
-import 'package:savoir/features/home/presentation/Screens/profile_screen.dart';
+import 'package:savoir/features/profile/presentation/screens/profile_screen.dart';
 import 'package:savoir/features/home/presentation/Screens/search_screen.dart';
 import 'package:savoir/models/app_colors.dart';
 
