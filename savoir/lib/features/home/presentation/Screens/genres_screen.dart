@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:savoir/features/reading/presentation/widgets/custom_drawer.dart';
+import 'package:savoir/features/profile/presentation/screens/setting_screen.dart';
+import 'package:savoir/features/reading_fatures/presentation/widgets/custom_drawer.dart';
 import 'package:savoir/models/app_colors.dart';
 
 class GenresScreen extends StatefulWidget {
@@ -25,6 +26,7 @@ class _GenresScreenState extends State<GenresScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: AppColors.background,
         drawer: CustomDrawer(),
         appBar: AppBar(
           backgroundColor: AppColors.background,
@@ -41,7 +43,12 @@ class _GenresScreenState extends State<GenresScreen> {
           ),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SettingScreen()),
+                );
+              },
               icon: Icon(Icons.settings),
               color: AppColors.iconsColor,
             ),
@@ -99,7 +106,7 @@ class _GenresScreenState extends State<GenresScreen> {
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.firsttextColor,
+                        color: AppColors.frsittextColor,
                       ),
                     ),
                     TextButton(
@@ -149,7 +156,7 @@ class _GenresScreenState extends State<GenresScreen> {
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w500,
-                                  color: AppColors.firsttextColor,
+                                  color: AppColors.frsittextColor,
                                 ),
                               ),
                             ],
@@ -165,7 +172,7 @@ class _GenresScreenState extends State<GenresScreen> {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w400,
-                    color: AppColors.secondTextColor,
+                    color: AppColors.frsittextColor,
                   ),
                 ),
                 SizedBox(height: 10),
