@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "558328010736",
+    "project_id": "savoir-7b668",
+    "storage_bucket": "savoir-7b668.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:558328010736:android:282e75d1877e335c352f35",
+        "android_client_info": {
+          "package_name": "com.example.savoir"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZFZyuxJ_R9qTKdKFkKpCFBLNOyQnA9aw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
