@@ -1,60 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:savoir/features/home/presentation/screens/home_screen.dart';
-import 'package:savoir/features/home/presentation/screens/genres_screen.dart';
-import 'package:savoir/features/search/presentation/screens/search_screen.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+import 'package:savoir/features/home/presentation/Screens/genres_screen.dart';
+import 'package:savoir/features/home/presentation/Screens/home_screen.dart';
 import 'package:savoir/features/profile/presentation/screens/profile_screen.dart';
+import 'package:savoir/features/home/presentation/Screens/search_screen.dart';
 import 'package:savoir/models/app_colors.dart';
 
-class CustomBouttomNavBar extends StatefulWidget {
+class CustomBouttomNavBar extends StatelessWidget {
   const CustomBouttomNavBar({super.key});
 
   @override
-  State<CustomBouttomNavBar> createState() => _CustomBouttomNavBarState();
-}
-
-class _CustomBouttomNavBarState extends State<CustomBouttomNavBar> {
-  int _selectedIndex = 0;
-
-  final List<Widget> _screens = [
-    HomeScreen(),
-    GenresScreen(),
-    SearchScreen(),
-    ProfileScreen(),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _screens[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
+    return PersistentTabView(
+      tabs: [
+        PersistentTabConfig(
+          screen: HomeScreen(),
+          item: ItemConfig(
             icon: Icon(Icons.local_library_outlined),
-            label: 'LIBRARY',
+            iconSize: 30,
+            title: 'LIBRARY',
+            textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+            activeForegroundColor: AppColors.iconsColor,
+            inactiveForegroundColor: Colors.grey,
           ),
-          BottomNavigationBarItem(
+        ),
+        PersistentTabConfig(
+          screen: GenresScreen(),
+          item: ItemConfig(
             icon: Icon(Icons.menu_book_sharp),
-            label: 'DISCOVER',
+            iconSize: 30,
+            title: 'DISCOVER',
+            textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+            activeForegroundColor: AppColors.iconsColor,
+            inactiveForegroundColor: Colors.grey,
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'SEARCH'),
-          BottomNavigationBarItem(
+        ),
+        PersistentTabConfig(
+          screen: SearchScreen(),
+          item: ItemConfig(
+            icon: Icon(Icons.search),
+            iconSize: 30,
+            title: 'SEARCH',
+            textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+            activeForegroundColor: AppColors.iconsColor,
+            inactiveForegroundColor: Colors.grey,
+          ),
+        ),
+        PersistentTabConfig(
+          screen: ProfileScreen(),
+          item: ItemConfig(
             icon: Icon(Icons.person_outline),
-            label: 'PROFILE',
+            iconSize: 30,
+            title: 'PROFILE',
+            textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+            activeForegroundColor: AppColors.iconsColor,
+            inactiveForegroundColor: Colors.grey,
           ),
-        ],
-        selectedItemColor: AppColors.iconsColor,
-        unselectedItemColor: Colors.grey,
-        iconSize: 30,
-      ),
+        ),
+      ],
+      navBarBuilder: (navBarConfig) =>
+          Style1BottomNavBar(navBarConfig: navBarConfig),
     );
   }
 }
