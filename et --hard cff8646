@@ -1,0 +1,39 @@
+[33mebdba11[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mYomna-work[m[33m, [m[1;31morigin/Yomna-work[m[33m)[m HEAD@{0}: reset: moving to HEAD
+[33mebdba11[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mYomna-work[m[33m, [m[1;31morigin/Yomna-work[m[33m)[m HEAD@{1}: checkout: moving from dev to Yomna-work
+[33mcff8646[m[33m ([m[1;32mdev[m[33m)[m HEAD@{2}: commit (merge): Fix merge conflicts and unify home_screen path
+[33m2f5e702[m HEAD@{3}: checkout: moving from dev to dev
+[33m2f5e702[m HEAD@{4}: checkout: moving from Yomna-work to dev
+[33mebdba11[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mYomna-work[m[33m, [m[1;31morigin/Yomna-work[m[33m)[m HEAD@{5}: commit: login_signup_forget_reset_splash screens editing
+[33m0db1c0f[m HEAD@{6}: checkout: moving from dev to Yomna-work
+[33m2f5e702[m HEAD@{7}: checkout: moving from Yomna-work to dev
+[33m0db1c0f[m HEAD@{8}: commit: splash screen
+[33m85cdded[m HEAD@{9}: commit: complete reading screen
+[33m642d81d[m HEAD@{10}: commit: details screen editing
+[33mde402ae[m HEAD@{11}: commit: details screen grid view
+[33m02d7256[m HEAD@{12}: commit: details screen editing
+[33mca5edfe[m HEAD@{13}: commit: listview.builder custom of details screen
+[33m2d8130f[m HEAD@{14}: commit: book datails text
+[33mbf0f3f9[m HEAD@{15}: commit: book details widget
+[33mbab9fd3[m HEAD@{16}: commit: book header & download buttom & read now buttom
+[33m7746246[m HEAD@{17}: commit: linked between home & details
+[33m78abb5c[m HEAD@{18}: commit: home screen editing
+[33m5787d53[m HEAD@{19}: commit: home bage
+[33m56db4c3[m HEAD@{20}: commit: main bage
+[33m67381e8[m HEAD@{21}: commit: floatingActionButton& editing code
+[33m9d4798d[m HEAD@{22}: commit: Gredview buider
+[33me0d9cde[m HEAD@{23}: commit: exlore generes & continue reading
+[33m8f8874c[m HEAD@{24}: commit: build card
+[33m2f5e702[m HEAD@{25}: checkout: moving from Yomna-work to Yomna-work
+[33m2f5e702[m HEAD@{26}: merge dev: Fast-forward
+[33m619743c[m HEAD@{27}: checkout: moving from dev to Yomna-work
+[33m2f5e702[m HEAD@{28}: commit: appbar of home screen
+[33mf13eb3a[m HEAD@{29}: checkout: moving from dev to dev
+[33mf13eb3a[m HEAD@{30}: checkout: moving from dev to dev
+[33mf13eb3a[m HEAD@{31}: pull origin dev: Fast-forward
+[33ma6940fe[m HEAD@{32}: checkout: moving from dev to dev
+[33ma6940fe[m HEAD@{33}: checkout: moving from Yomna-work to dev
+[33m619743c[m HEAD@{34}: commit: Refactor: Organize project structure into features (Auth, Home, details,onboarding ,search , Profile)
+[33ma6940fe[m HEAD@{35}: checkout: moving from dev to Yomna-work
+[33ma6940fe[m HEAD@{36}: pull origin dev: Fast-forward
+[33m0920f6c[m[33m ([m[1;31morigin/Profile-branch[m[33m)[m HEAD@{37}: checkout: moving from dev to dev
+[33m0920f6c[m[33m ([m[1;31morigin/Profile-branch[m[33m)[m HEAD@{38}: clone: from https://github.com/salmakandill/Savoir.git
