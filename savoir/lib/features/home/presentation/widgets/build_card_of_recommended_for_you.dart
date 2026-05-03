@@ -1,17 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:savoir/features/details/data/models/also_liked_books_model.dart';
+import 'package:savoir/features/details/data/models/book_details_model.dart';
+import 'package:savoir/features/details/presentation/cubits/book_details_cubit/also_like_cubit.dart';
+import 'package:savoir/features/details/presentation/cubits/book_details_cubit/details_cubit.dart';
 import 'package:savoir/features/details/presentation/screens/details_screen.dart';
 import 'package:savoir/models/app_colors.dart';
 
 class BuildCardOfRecommendedForYouwidget extends StatelessWidget {
-  const BuildCardOfRecommendedForYouwidget({super.key});
-
+  BuildCardOfRecommendedForYouwidget({super.key, this.book, this.likedBooks});
+  final BookDetailsModel? book;
+  final AlsoLikedBooksModel? likedBooks;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => DetailsScreen()),
+          MaterialPageRoute(
+            builder: (context) => MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) =>
+                      DetailsCubit()..getBookDetails(id: book?.id ?? 0),
+                ),
+                BlocProvider(
+                  create: (context) =>
+                      AlsoLikeCubit()..getSimilarBooks(id: book?.id ?? 0),
+                ),
+              ],
+              child: DetailsScreen(),
+            ),
+          ),
         );
       },
       child: Container(
@@ -28,8 +48,8 @@ class BuildCardOfRecommendedForYouwidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 child: Stack(
                   children: [
-                    Image.asset(
-                      "assets/images/Reading Book.png",
+                    Image.network(
+                      likedBooks?.image ?? "",
                       height: double.infinity,
                       width: double.infinity,
                       fit: BoxFit.cover,
@@ -56,7 +76,7 @@ class BuildCardOfRecommendedForYouwidget extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              "The Old Man and the Sea",
+              likedBooks?.title ?? "",
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -69,7 +89,7 @@ class BuildCardOfRecommendedForYouwidget extends StatelessWidget {
 
             SizedBox(height: 4),
             Text(
-              "Ernest Hemingway",
+              likedBooks?.category ?? "",
               style: TextStyle(color: AppColors.thirdTextColor, fontSize: 13),
             ),
           ],

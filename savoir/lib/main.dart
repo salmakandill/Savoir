@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:savoir/features/authentication/presentation/screens/sign_up_screen.dart';
 import 'package:savoir/features/home/presentation/screens/home_screen.dart';
 import 'package:savoir/features/authentication/presentation/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';

@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:savoir/features/details/data/models/also_liked_books_model.dart';
+import 'package:savoir/features/details/data/models/book_details_model.dart';
+import 'package:savoir/features/details/presentation/cubits/book_details_cubit/also_like_cubit.dart';
+import 'package:savoir/features/details/presentation/cubits/book_details_cubit/also_like_cubit_status.dart';
+import 'package:savoir/features/details/presentation/cubits/book_details_cubit/book_details_cubit_status.dart';
+import 'package:savoir/features/details/presentation/cubits/book_details_cubit/details_cubit.dart';
 import 'package:savoir/features/details/presentation/widgets/book_details.dart';
 import 'package:savoir/features/details/presentation/widgets/book_details_publish_pages_number.dart';
 import 'package:savoir/features/details/presentation/widgets/build_book_header_of_details.dart';
@@ -7,7 +14,9 @@ import 'package:savoir/features/home/presentation/widgets/build_card_of_recommen
 import 'package:savoir/models/app_colors.dart';
 
 class DetailsScreen extends StatelessWidget {
-  const DetailsScreen({super.key});
+  const DetailsScreen({super.key, this.book, this.likedBooks});
+  final BookDetailsModel? book;
+  final AlsoLikedBooksModel? likedBooks;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,14 +25,12 @@ class DetailsScreen extends StatelessWidget {
         backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          onPressed: () {},
-          icon: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back, color: AppColors.cardsBackground),
-          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back, color: AppColors.cardsBackground),
         ),
+
         title: Text(
           'Savoir',
           style: TextStyle(
@@ -46,46 +53,82 @@ class DetailsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              BuildBookHeaderOfDetailswidget(),
-              SizedBox(height: 48),
-              BookDetailswidget(),
+              BlocBuilder<DetailsCubit, DetailsStates>(
+                builder: (context, state) {
+                  if (state is DetailsLoadingState) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (state is DetailsSuccessState) {
+                    return Column(
+                      children: [
+                        BuildBookHeaderOfDetailswidget(book: state.book),
+                        SizedBox(height: 48),
+                        BookDetailswidget(book: state.book),
+                      ],
+                    );
+                  } else if (state is DetailsFailureState) {
+                    return Center(child: Text(state.errorMessage));
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
+              ),
+
               SizedBox(height: 48),
               Text(
                 'Synopsis',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
               ),
               SizedBox(height: 16),
-              Text(
-                'Night fell quickly. The temperaturedropped, and the boy wrapped his heavycloak tighter around his shoulders. Hebuilt a small fire using dry desert scrub. Ashe watched the flames dance, he thoughtof Fatima. She was waiting for him at theoasis, her eyes reflecting the same starlighthe saw now. Her love was not a chain, buta wind at his back.',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Night fell quickly. The temperaturedropped, and the boy wrapped his heavycloak tighter around his shoulders. Hebuilt a small fire using dry desert scrub. Ashe watched the flames dance, he thoughtof Fatima. She was waiting for him at theoasis, her eyes reflecting the same starlighthe saw now. Her love was not a chain, buta wind at his back.',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-              ),
-              SizedBox(height: 16),
-              SizedBox(
-                height: 40,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ItemOfGenreswidget(
-                      title: 'Literary Fiction',
-                      isSelected: index == 0,
-                      onTap: () {},
+              BlocBuilder<DetailsCubit, DetailsStates>(
+                builder: (context, state) {
+                  if (state is DetailsLoadingState) {
+                    return SizedBox();
+                  } else if (state is DetailsSuccessState) {
+                    return Text(
+                      state.book.description ?? "No description available.",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: AppColors.textColor4,
+                      ),
                     );
-                  },
-                ),
+                  } else if (state is DetailsFailureState) {
+                    return Center(child: Text(state.errorMessage));
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
               ),
+
+              SizedBox(height: 16),
+              // SizedBox(
+              //   height: 40,
+              //   child: ListView.builder(
+              //     scrollDirection: Axis.horizontal,
+              //     itemCount: 10,
+              //     itemBuilder: (BuildContext context, int index) {
+              //       return ItemOfGenreswidget(
+              //         title: 'Literary Fiction',
+              //         isSelected: index == 0,
+              //         onTap: () {},
+              //       );
+              //     },
+              //   ),
+              // ),
               SizedBox(height: 48),
               Text(
                 'Book Information',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
               ),
               SizedBox(height: 16),
-              BookDetailsPublishPagesNumberwidget(),
+              BlocBuilder<DetailsCubit, DetailsStates>(
+                builder: (context, state) {
+                  if (state is DetailsSuccessState) {
+                    return BookDetailsPublishPagesNumberwidget();
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
+              ),
               SizedBox(height: 48),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -104,19 +147,34 @@ class DetailsScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 20,
-                  childAspectRatio: 0.55,
-                ),
-                itemCount: 10,
-                itemBuilder: (context, index) =>
-                    BuildCardOfRecommendedForYouwidget(),
+              BlocBuilder<AlsoLikeCubit, SimilarBooksState>(
+                builder: (context, state) {
+                  if (state is SimilarLoadingBooks) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (state is SimilarSuccessBooks) {
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 16,
+                        mainAxisSpacing: 20,
+                        childAspectRatio: 0.55,
+                      ),
+                      itemCount: state.books.length,
+                      itemBuilder: (context, index) =>
+                          BuildCardOfRecommendedForYouwidget(
+                            likedBooks: state.books[index],
+                          ),
+                    );
+                  } else if (state is SimilarFailureBooks) {
+                    return Center(child: Text(state.errMessage));
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
               ),
+
               const SizedBox(height: 20),
             ],
           ),
