@@ -14,6 +14,12 @@
       "languageVersion": "3.4"
     },
     {
+      "name": "bloc",
+      "rootUri": "file:///C:/Users/rabys/AppData/Local/Pub/Cache/hosted/pub.dev/bloc-9.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
       "name": "boolean_selector",
       "rootUri": "file:///C:/Users/rabys/AppData/Local/Pub/Cache/hosted/pub.dev/boolean_selector-2.1.2",
       "packageUri": "lib/",
@@ -102,6 +108,12 @@
       "rootUri": "file:///C:/Users/rabys/Downloads/flutter_windows_3.38.3-stable/flutter/packages/flutter",
       "packageUri": "lib/",
       "languageVersion": "3.9"
+    },
+    {
+      "name": "flutter_bloc",
+      "rootUri": "file:///C:/Users/rabys/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_bloc-9.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
     },
     {
       "name": "flutter_lints",
@@ -194,6 +206,12 @@
       "languageVersion": "3.2"
     },
     {
+      "name": "nested",
+      "rootUri": "file:///C:/Users/rabys/AppData/Local/Pub/Cache/hosted/pub.dev/nested-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "path",
       "rootUri": "file:///C:/Users/rabys/AppData/Local/Pub/Cache/hosted/pub.dev/path-1.9.1",
       "packageUri": "lib/",
@@ -210,6 +228,12 @@
       "rootUri": "file:///C:/Users/rabys/AppData/Local/Pub/Cache/hosted/pub.dev/plugin_platform_interface-2.1.8",
       "packageUri": "lib/",
       "languageVersion": "3.0"
+    },
+    {
+      "name": "provider",
+      "rootUri": "file:///C:/Users/rabys/AppData/Local/Pub/Cache/hosted/pub.dev/provider-6.1.5+1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "sky_engine",

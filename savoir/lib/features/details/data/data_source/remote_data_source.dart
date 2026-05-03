@@ -2,11 +2,11 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:savoir/features/details/data/models/book_details_model.dart';
 
-class BookRepository {
+class RemoteDataSource {
   final Dio dio = Dio();
   final String _apiKey = 'YOUR_API_KEY';
 
-  Future<BookDetailsModel> getBookById(int bookId) async {
+  Future<BookDetailsModel> getBookById({required int bookId}) async {
     try {
       final Response response = await dio.get(
         'https://api.bigbookapi.com/$bookId',

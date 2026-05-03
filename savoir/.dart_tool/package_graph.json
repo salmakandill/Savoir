@@ -12,6 +12,7 @@
         "firebase_auth",
         "firebase_core",
         "flutter",
+        "flutter_bloc",
         "persistent_bottom_nav_bar_v2",
         "smooth_page_indicator"
       ],
@@ -43,6 +44,15 @@
         "stream_channel",
         "test_api",
         "vector_math"
+      ]
+    },
+    {
+      "name": "flutter_bloc",
+      "version": "9.1.1",
+      "dependencies": [
+        "bloc",
+        "flutter",
+        "provider"
       ]
     },
     {
@@ -202,6 +212,22 @@
       ]
     },
     {
+      "name": "provider",
+      "version": "6.1.5+1",
+      "dependencies": [
+        "collection",
+        "flutter",
+        "nested"
+      ]
+    },
+    {
+      "name": "bloc",
+      "version": "9.2.0",
+      "dependencies": [
+        "meta"
+      ]
+    },
+    {
       "name": "dio_web_adapter",
       "version": "2.1.2",
       "dependencies": [
@@ -358,6 +384,13 @@
       "dependencies": [
         "source_span",
         "string_scanner"
+      ]
+    },
+    {
+      "name": "nested",
+      "version": "1.0.0",
+      "dependencies": [
+        "flutter"
       ]
     },
     {
