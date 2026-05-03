@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savoir/features/details/data/models/book_details_model.dart';
-import 'package:savoir/features/details/presentation/cubits/book_details_cubit/cubit_status.dart';
+import 'package:savoir/features/details/presentation/cubits/book_details_cubit/book_details_cubit_status.dart';
 import 'package:savoir/features/details/presentation/cubits/book_details_cubit/details_cubit.dart';
 import 'package:savoir/features/details/presentation/widgets/book_details.dart';
 import 'package:savoir/features/details/presentation/widgets/book_details_publish_pages_number.dart';
@@ -154,7 +154,7 @@ class DetailsScreen extends StatelessWidget {
                 ),
                 itemCount: 10,
                 itemBuilder: (context, index) =>
-                    BuildCardOfRecommendedForYouwidget( ),
+                    BuildCardOfRecommendedForYouwidget(),
               ),
               const SizedBox(height: 20),
             ],

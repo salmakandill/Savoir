@@ -14,4 +14,5 @@ class DetailsSuccessState extends DetailsStates {
 class DetailsFailureState extends DetailsStates {
   final String errorMessage;
   DetailsFailureState({required this.errorMessage});
+
 }
