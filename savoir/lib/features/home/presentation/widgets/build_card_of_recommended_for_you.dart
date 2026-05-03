@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:savoir/features/details/data/models/book_details_model.dart';
 import 'package:savoir/features/details/presentation/cubits/book_details_cubit/details_cubit.dart';
 import 'package:savoir/features/details/presentation/screens/details_screen.dart';
 import 'package:savoir/models/app_colors.dart';
 
 class BuildCardOfRecommendedForYouwidget extends StatelessWidget {
-  const BuildCardOfRecommendedForYouwidget({super.key});
-
+  BuildCardOfRecommendedForYouwidget({super.key, this.book});
+  final BookDetailsModel? book;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -15,7 +16,8 @@ class BuildCardOfRecommendedForYouwidget extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => BlocProvider(
-              create: (context) => DetailsCubit(),
+              create: (context) =>
+                  DetailsCubit()..getBookDetails(id: book?.id ?? 0),
               child: DetailsScreen(),
             ),
           ),
