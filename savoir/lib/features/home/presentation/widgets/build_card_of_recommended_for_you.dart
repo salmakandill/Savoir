@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:savoir/features/details/presentation/cubits/book_details_cubit/details_cubit.dart';
 import 'package:savoir/features/details/presentation/screens/details_screen.dart';
 import 'package:savoir/models/app_colors.dart';
 
@@ -11,7 +13,12 @@ class BuildCardOfRecommendedForYouwidget extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => DetailsScreen()),
+          MaterialPageRoute(
+            builder: (context) => BlocProvider(
+              create: (context) => DetailsCubit(),
+              child: DetailsScreen(),
+            ),
+          ),
         );
       },
       child: Container(

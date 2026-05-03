@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:savoir/features/details/presentation/cubits/book_details_cubit/cubit_status.dart';
+import 'package:savoir/features/details/presentation/cubits/book_details_cubit/details_cubit.dart';
 import 'package:savoir/features/details/presentation/widgets/book_details.dart';
 import 'package:savoir/features/details/presentation/widgets/book_details_publish_pages_number.dart';
 import 'package:savoir/features/details/presentation/widgets/build_book_header_of_details.dart';
@@ -16,14 +19,12 @@ class DetailsScreen extends StatelessWidget {
         backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          onPressed: () {},
-          icon: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back, color: AppColors.cardsBackground),
-          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back, color: AppColors.cardsBackground),
         ),
+
         title: Text(
           'Savoir',
           style: TextStyle(
@@ -46,46 +47,82 @@ class DetailsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              BuildBookHeaderOfDetailswidget(),
-              SizedBox(height: 48),
-              BookDetailswidget(),
+              BlocBuilder<DetailsCubit, DetailsStates>(
+                builder: (context, state) {
+                  if (state is DetailsLoadingState) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (state is DetailsSuccessState) {
+                    return Column(
+                      children: [
+                        BuildBookHeaderOfDetailswidget(book: state.book),
+                        SizedBox(height: 48),
+                        BookDetailswidget(book: state.book),
+                      ],
+                    );
+                  } else if (state is DetailsFailureState) {
+                    return Center(child: Text(state.errorMessage));
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
+              ),
+
               SizedBox(height: 48),
               Text(
                 'Synopsis',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
               ),
               SizedBox(height: 16),
-              Text(
-                'Night fell quickly. The temperaturedropped, and the boy wrapped his heavycloak tighter around his shoulders. Hebuilt a small fire using dry desert scrub. Ashe watched the flames dance, he thoughtof Fatima. She was waiting for him at theoasis, her eyes reflecting the same starlighthe saw now. Her love was not a chain, buta wind at his back.',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Night fell quickly. The temperaturedropped, and the boy wrapped his heavycloak tighter around his shoulders. Hebuilt a small fire using dry desert scrub. Ashe watched the flames dance, he thoughtof Fatima. She was waiting for him at theoasis, her eyes reflecting the same starlighthe saw now. Her love was not a chain, buta wind at his back.',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-              ),
-              SizedBox(height: 16),
-              SizedBox(
-                height: 40,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ItemOfGenreswidget(
-                      title: 'Literary Fiction',
-                      isSelected: index == 0,
-                      onTap: () {},
+              BlocBuilder<DetailsCubit, DetailsStates>(
+                builder: (context, state) {
+                  if (state is DetailsLoadingState) {
+                    return SizedBox();
+                  } else if (state is DetailsSuccessState) {
+                    return Text(
+                      state.book.description ?? "No description available.",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: AppColors.textColor4,
+                      ),
                     );
-                  },
-                ),
+                  } else if (state is DetailsFailureState) {
+                    return Center(child: Text(state.errorMessage));
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
               ),
+
+              SizedBox(height: 16),
+              // SizedBox(
+              //   height: 40,
+              //   child: ListView.builder(
+              //     scrollDirection: Axis.horizontal,
+              //     itemCount: 10,
+              //     itemBuilder: (BuildContext context, int index) {
+              //       return ItemOfGenreswidget(
+              //         title: 'Literary Fiction',
+              //         isSelected: index == 0,
+              //         onTap: () {},
+              //       );
+              //     },
+              //   ),
+              // ),
               SizedBox(height: 48),
               Text(
                 'Book Information',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
               ),
               SizedBox(height: 16),
-              BookDetailsPublishPagesNumberwidget(),
+              BlocBuilder<DetailsCubit, DetailsStates>(
+                builder: (context, state) {
+                  if (state is DetailsSuccessState) {
+                    return BookDetailsPublishPagesNumberwidget();
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
+              ),
               SizedBox(height: 48),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

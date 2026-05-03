@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:savoir/features/details/data/models/book_details_model.dart';
 import 'package:savoir/features/details/presentation/widgets/download_and_list_buttom.dart';
 import 'package:savoir/features/details/presentation/widgets/read_now_buttom.dart';
+import 'package:savoir/models/app_colors.dart';
 
 class BuildBookHeaderOfDetailswidget extends StatelessWidget {
-  const BuildBookHeaderOfDetailswidget({super.key});
-
+  const BuildBookHeaderOfDetailswidget({super.key, required this.book});
+  final BookDetailsModel book;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Center(
           child: Stack(
-            clipBehavior: Clip.none,
             children: [
               Container(
                 height: 384,
@@ -28,13 +29,10 @@ class BuildBookHeaderOfDetailswidget extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: Image.asset(
-                    "assets/images/Reading Book.png",
-                    fit: BoxFit.cover,
-                  ),
+                  child: Image.network(book.image ?? "", fit: BoxFit.cover),
                 ),
               ),
-              const Positioned(
+              Positioned(
                 top: -5,
                 right: 15,
                 child: Icon(Icons.bookmark, color: Color(0xff8D4F1D), size: 40),
@@ -44,8 +42,8 @@ class BuildBookHeaderOfDetailswidget extends StatelessWidget {
         ),
         const SizedBox(height: 20),
 
-        const Text(
-          "The Silence of the Echoes",
+        Text(
+          book.title ?? "Unknown Title",
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -54,8 +52,8 @@ class BuildBookHeaderOfDetailswidget extends StatelessWidget {
         ),
         const SizedBox(height: 8),
 
-        const Text(
-          "Elara M. Sterling",
+        Text(
+          book.authorname ?? "Unknown Author",
           style: TextStyle(
             fontSize: 16,
             color: Colors.grey,
@@ -69,12 +67,17 @@ class BuildBookHeaderOfDetailswidget extends StatelessWidget {
           children: [
             ...List.generate(
               5,
-              (index) =>
-                  const Icon(Icons.star, color: Color(0xff8D4F1D), size: 18),
+              (index) => Icon(
+                Icons.star,
+                color: index < (book.rating ?? 0).floor()
+                    ? AppColors.cardsBackground
+                    : AppColors.containercolor,
+                size: 18,
+              ),
             ),
             const SizedBox(width: 8),
-            const Text(
-              "4.8 (2.4k reviews)",
+            Text(
+              "${book.rating ?? 0} (2.4k reviews)",
               style: TextStyle(color: Colors.grey, fontSize: 12),
             ),
           ],

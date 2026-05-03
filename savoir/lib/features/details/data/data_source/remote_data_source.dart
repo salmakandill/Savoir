@@ -9,7 +9,7 @@ class RemoteDataSource {
   Future<BookDetailsModel> getBookById({required int bookId}) async {
     try {
       final Response response = await dio.get(
-        'https://api.bigbookapi.com/$bookId',
+        ' https://api.bigbookapi.com/$bookId',
         queryParameters: {'api-key': _apiKey},
       );
 

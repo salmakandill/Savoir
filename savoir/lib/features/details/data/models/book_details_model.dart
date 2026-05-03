@@ -4,7 +4,10 @@ class BookDetailsModel {
   final String? image;
   final String? description;
   final double? rating;
-  final List<String>? authors;
+  final String? authorid;
+  final String? authorname;
+  final String? pages;
+  final String? language;
 
   BookDetailsModel({
     required this.id,
@@ -12,7 +15,10 @@ class BookDetailsModel {
     this.image,
     this.description,
     this.rating,
-    this.authors,
+    this.authorid,
+    this.authorname,
+    this.pages,
+    this.language,
   });
 
   factory BookDetailsModel.fromJson(
@@ -27,7 +33,10 @@ class BookDetailsModel {
       rating: json['rating'] != null
           ? (json['rating']['average'] as num).toDouble()
           : 0.0,
-      authors: authorsList,
+      authorid: json['author_id'] ?? '',
+      authorname: json['author_name'] ?? '',
+      pages: json['pages'] ?? 'Unknown',
+      language: json['language'] ?? 'Unknown',
     );
   }
 }
