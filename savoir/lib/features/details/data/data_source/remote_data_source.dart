@@ -1,16 +1,17 @@
 import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:savoir/features/details/data/models/also_liked_books_model.dart';
 import 'package:savoir/features/details/data/models/book_details_model.dart';
 
 class RemoteDataSource {
   final Dio dio = Dio();
-  final String apiKey = 'YOUR_API_KEY';
+  final String apiKey = 'e5c47bafef88488bb70a096f2093b50c';
 
   Future<BookDetailsModel> getBookById({required int bookId}) async {
     try {
       final Response response = await dio.get(
-        ' https://api.bigbookapi.com/$bookId',
+        'https://api.bigbookapi.com/$bookId',
         queryParameters: {'api-key': apiKey},
       );
 
@@ -40,7 +41,10 @@ class RemoteDataSource {
   Future<List<AlsoLikedBooksModel>> getSimilarBooks({required int id}) async {
     try {
       List<AlsoLikedBooksModel> similarBooks = [];
-      final response = await dio.get('https://api.bigbookapi.com/$id/similar');
+      final response = await dio.get(
+        'https://api.bigbookapi.com/$id/similar',
+        queryParameters: {'api-key': apiKey},
+      );
 
       for (var element in response.data["similar_books"]) {
         AlsoLikedBooksModel book = AlsoLikedBooksModel.fromJson(element);
@@ -55,5 +59,4 @@ class RemoteDataSource {
       throw Exception("Error: $e");
     }
   }
-
 }

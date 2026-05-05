@@ -1,12 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:savoir/features/authentication/presentation/screens/login_screen.dart';
 import 'package:savoir/features/authentication/presentation/screens/otp_screen.dart';
 import 'package:savoir/features/authentication/presentation/widgets/forget_password_buttom.dart';
 import 'package:savoir/features/authentication/presentation/widgets/label_of_text_feild.dart';
 import 'package:savoir/features/authentication/presentation/widgets/text_feild_password.dart';
 import 'package:savoir/models/app_colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class ResetPasswordScreen extends StatelessWidget {
+class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});
+
+  @override
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
+}
+
+class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
+  void dispose() {
+    newPasswordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +113,7 @@ class ResetPasswordScreen extends StatelessWidget {
                       LabelOfTextFeildwidget(label: 'NEW PASSWORD'),
                       SizedBox(height: 8),
                       TextFeildpasswordwidget(
+                        controller: newPasswordController,
                         icon: Icons.lock_outline,
                         hintText: 'new password',
                       ),
@@ -103,19 +121,53 @@ class ResetPasswordScreen extends StatelessWidget {
                       LabelOfTextFeildwidget(label: 'CONFIRM PASSWORD'),
                       SizedBox(height: 8),
                       TextFeildpasswordwidget(
+                        controller: confirmPasswordController,
                         icon: Icons.lock_outline,
                         hintText: 'confirm password',
                       ),
                       SizedBox(height: 30),
                       ForgetPasswordButtomwidget(
                         lable: 'Reset Password',
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => VerificationScreen(),
-                            ),
-                          );
+                        onPressed: () async {
+                          if (newPasswordController.text ==
+                              confirmPasswordController.text) {
+                            try {
+                              await FirebaseAuth.instance.currentUser!
+                                  .updatePassword(
+                                    newPasswordController.text.trim(),
+                                  );
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    "Password reset successful! Please log in with your new password.",
+                                  ),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginScreen(),
+                                ),
+                              );
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text("error: ${e.toString()}"),
+                                ),
+                              );
+                            }
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "Passwords do not match! Please try again.",
+                                ),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
                         },
                       ),
                     ],

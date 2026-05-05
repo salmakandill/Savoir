@@ -95,7 +95,7 @@ class BuildBookHeaderOfDetailswidget extends StatelessWidget {
                 label: "Download",
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: 12),
             Expanded(
               child: DownloadAndListButtomwidget(
                 icon: Icons.add,

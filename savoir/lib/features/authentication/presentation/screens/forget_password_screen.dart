@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:savoir/features/authentication/presentation/screens/otp_screen.dart';
 import 'package:savoir/features/authentication/presentation/screens/reset_password_screen.dart';
 import 'package:savoir/features/authentication/presentation/widgets/forget_password_buttom.dart';
 import 'package:savoir/features/authentication/presentation/widgets/text_feild_of_forget_password.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:savoir/models/app_colors.dart';
 
-class ForgetPasswordScreen extends StatelessWidget {
+class ForgetPasswordScreen extends StatefulWidget {
   const ForgetPasswordScreen({super.key});
+
+  @override
+  State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();
+}
+
+class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
+  final TextEditingController emailController = TextEditingController();
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,17 +97,38 @@ class ForgetPasswordScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 30),
-                  TextFeildofforgetpasseordwidget(),
+                  TextFeildofforgetpasseordwidget(
+                    emailController: emailController,
+                  ),
                   SizedBox(height: 28),
                   ForgetPasswordButtomwidget(
                     lable: 'Send Reset Link',
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ResetPasswordScreen(),
-                        ),
-                      );
+                    onPressed: () async {
+                      try {
+                        await FirebaseAuth.instance.sendPasswordResetEmail(
+                          email: emailController.text.trim(),
+                        );
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Reset link sent! Check your email."),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => VerificationScreen(),
+                          ),
+                        );
+                      } on FirebaseException catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(e.message ?? "An error occurred"),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
                     },
                   ),
                   SizedBox(height: 20),

@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:savoir/models/app_colors.dart';
 
 class TextFeildofforgetpasseordwidget extends StatelessWidget {
-  const TextFeildofforgetpasseordwidget({super.key});
+  const TextFeildofforgetpasseordwidget({super.key, this.emailController});
+  final TextEditingController? emailController;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: emailController,
       decoration: InputDecoration(
         filled: true,
         fillColor: AppColors.containercolor.withOpacity(0.1),
