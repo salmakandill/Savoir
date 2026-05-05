@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savoir/features/details/data/models/also_liked_books_model.dart';
@@ -8,13 +10,13 @@ import 'package:savoir/features/details/presentation/screens/details_screen.dart
 import 'package:savoir/models/app_colors.dart';
 
 class BuildCardOfRecommendedForYouwidget extends StatelessWidget {
-  BuildCardOfRecommendedForYouwidget({super.key, this.book, this.likedBooks});
+  BuildCardOfRecommendedForYouwidget({super.key, this.book});
   final BookDetailsModel? book;
-  final AlsoLikedBooksModel? likedBooks;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        log("Book ID: ${book?.id}");
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -22,11 +24,11 @@ class BuildCardOfRecommendedForYouwidget extends StatelessWidget {
               providers: [
                 BlocProvider(
                   create: (context) =>
-                      DetailsCubit()..getBookDetails(id: book?.id ?? 0),
+                      DetailsCubit()..getBookDetails(id: book!.id),
                 ),
                 BlocProvider(
                   create: (context) =>
-                      AlsoLikeCubit()..getSimilarBooks(id: book?.id ?? 0),
+                      AlsoLikeCubit()..getSimilarBooks(id: book!.id),
                 ),
               ],
               child: DetailsScreen(),
@@ -49,10 +51,23 @@ class BuildCardOfRecommendedForYouwidget extends StatelessWidget {
                 child: Stack(
                   children: [
                     Image.network(
-                      likedBooks?.image ?? "",
+                      book?.image ?? "",
                       height: double.infinity,
                       width: double.infinity,
                       fit: BoxFit.cover,
+
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          color: Colors.grey[300],
+                          child: Center(
+                            child: Icon(
+                              Icons.broken_image,
+                              size: 50,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                     Positioned(
                       top: 10,
@@ -76,7 +91,7 @@ class BuildCardOfRecommendedForYouwidget extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              likedBooks?.title ?? "",
+              book?.title ?? "",
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -89,7 +104,7 @@ class BuildCardOfRecommendedForYouwidget extends StatelessWidget {
 
             SizedBox(height: 4),
             Text(
-              likedBooks?.category ?? "",
+              book?.authorname ?? "",
               style: TextStyle(color: AppColors.thirdTextColor, fontSize: 13),
             ),
           ],

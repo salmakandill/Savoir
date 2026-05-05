@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savoir/features/details/data/models/also_liked_books_model.dart';
+import 'package:savoir/features/details/data/models/book_details_model.dart';
+import 'package:savoir/features/home/presentation/cubit/home_recommended_cubit.dart';
+import 'package:savoir/features/home/presentation/cubit/home_states_recommended.dart';
 import 'package:savoir/features/home/presentation/widgets/build_card.dart';
 import 'package:savoir/features/home/presentation/widgets/genres_item.dart';
 import 'package:savoir/features/reading_fatures/presentation/widgets/custom_drawer.dart';
@@ -100,25 +104,38 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 20,
-                  childAspectRatio: 0.55,
-                ),
-                itemCount: 10,
-                itemBuilder: (context, index) => BuildCardOfRecommendedForYouwidget(
-                  likedBooks: AlsoLikedBooksModel(
-                    id: index,
-                    title: "Book Name $index",
-                    category: "Category",
-                    image:
-                        "https://images.search.yahoo.com/search/images;_ylt=AwrNODtsBPlpPwIAXx9XNyoA;_ylu=Y29sbwNiZjEEcG9zAzEEdnRpZAMEc2VjA3Nj?type=E210US91105G0&p=book+image&fr=mcafee&th=301&tw=474&imgurl=https%3A%2F%2Fwallpaperaccess.com%2Ffull%2F1209397.jpg&rurl=https%3A%2F%2Fwww.pexels.com%2Fsearch%2Fbooks%2F&size=2136KB&name=500%2B+Beautiful+Books+Photos+%C2%B7+Pexels+%C2%B7+Free+Stock+Photos&oid=4&h=3107&w=4880&turl=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.BRfzuv_lNslKjMToY7T3FQHaEt%3Fpid%3DApi&tt=500%2B+Beautiful+Books+Photos+%C2%B7+Pexels+%C2%B7+Free+Stock+Photos&sigr=FFHKg_.Ycw79&sigit=Y_mgyJIffszM&sigi=.9825JsZjRuN&sign=WCHbrNmyCqfz&sigt=WCHbrNmyCqfz",
-                  ),
-                ),
+              BlocBuilder<HomeCubit, HomeStates>(
+                builder: (context, state) {
+                  if (state is HomeLoadingState) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (state is HomeSuccessState) {
+                    final booksList = state.books;
+
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 20,
+                            childAspectRatio: 0.55,
+                          ),
+                      itemCount: booksList.length,
+                      itemBuilder: (context, index) =>
+                          BuildCardOfRecommendedForYouwidget(
+                            book: BookDetailsModel(
+                              id: state.books[index].id,
+                              title: state.books[index].title,
+                              image: state.books[index].imageUrl,
+                            ),
+                          ),
+                    );
+                  } else if (state is HomeFailureState) {
+                    return Center(child: Text(state.message));
+                  }
+                  return Container();
+                },
               ),
               const SizedBox(height: 20),
             ],

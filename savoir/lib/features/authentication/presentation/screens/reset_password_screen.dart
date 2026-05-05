@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:savoir/features/authentication/presentation/screens/login_screen.dart';
 import 'package:savoir/features/authentication/presentation/screens/otp_screen.dart';
@@ -129,9 +131,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       ForgetPasswordButtomwidget(
                         lable: 'Reset Password',
                         onPressed: () async {
+                          log(newPasswordController.text);
                           if (newPasswordController.text ==
                               confirmPasswordController.text) {
                             try {
+                              final user = FirebaseAuth.instance.currentUser;
+                              log(  user.toString()); 
                               await FirebaseAuth.instance.currentUser!
                                   .updatePassword(
                                     newPasswordController.text.trim(),

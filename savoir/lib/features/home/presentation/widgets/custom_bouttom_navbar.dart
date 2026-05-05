@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+import 'package:savoir/features/home/data/models/books_model.dart';
 import 'package:savoir/features/home/presentation/Screens/genres_screen.dart';
 import 'package:savoir/features/home/presentation/Screens/home_screen.dart';
+import 'package:savoir/features/home/presentation/cubit/home_recommended_cubit.dart';
 import 'package:savoir/features/profile/presentation/screens/profile_screen.dart';
 import 'package:savoir/features/home/presentation/Screens/search_screen.dart';
 import 'package:savoir/models/app_colors.dart';
 
 class CustomBouttomNavBar extends StatelessWidget {
-  const CustomBouttomNavBar({super.key});
-
+  CustomBouttomNavBar({super.key, this.booksModel});
+  final BooksModel? booksModel;
   @override
   Widget build(BuildContext context) {
     return PersistentTabView(
       tabs: [
         PersistentTabConfig(
-          screen: HomeScreen(),
+          screen: BlocProvider(
+            create: (context) => HomeCubit()..getBooks(),
+            child: HomeScreen(),
+          ),
           item: ItemConfig(
             icon: Icon(Icons.local_library_outlined),
             iconSize: 30,
