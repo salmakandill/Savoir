@@ -151,19 +151,26 @@ class DetailsScreen extends StatelessWidget {
                   if (state is SimilarLoadingBooks) {
                     return Center(child: CircularProgressIndicator());
                   } else if (state is SimilarSuccessBooks) {
+                    final booksList = state.books;
+
                     return GridView.builder(
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 16,
-                        mainAxisSpacing: 20,
-                        childAspectRatio: 0.55,
-                      ),
-                      itemCount: state.books.length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 20,
+                            childAspectRatio: 0.55,
+                          ),
+                      itemCount: booksList.length,
                       itemBuilder: (context, index) =>
                           BuildCardOfRecommendedForYouwidget(
-                           // book: ,
+                            book: BookDetailsModel(
+                              id: state.books[index].id,
+                              title: state.books[index].title,
+                              image: state.books[index].image,
+                            ),
                           ),
                     );
                   } else if (state is SimilarFailureBooks) {
