@@ -14,9 +14,8 @@ import 'package:savoir/features/home/presentation/widgets/build_card_of_recommen
 import 'package:savoir/models/app_colors.dart';
 
 class DetailsScreen extends StatelessWidget {
-  const DetailsScreen({super.key, this.book, this.likedBooks});
+  const DetailsScreen({super.key, this.book});
   final BookDetailsModel? book;
-  final AlsoLikedBooksModel? likedBooks;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -164,7 +163,7 @@ class DetailsScreen extends StatelessWidget {
                       itemCount: state.books.length,
                       itemBuilder: (context, index) =>
                           BuildCardOfRecommendedForYouwidget(
-                            likedBooks: state.books[index],
+                           // book: ,
                           ),
                     );
                   } else if (state is SimilarFailureBooks) {
