@@ -1,10 +1,33 @@
+import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:savoir/features/authentication/presentation/screens/login_screen.dart';
 import 'package:savoir/features/authentication/presentation/widgets/label_of_text_feild.dart';
 import 'package:savoir/features/authentication/presentation/widgets/text_feild.dart';
+import 'package:savoir/features/home/presentation/screens/home_screen.dart';
+import 'package:savoir/features/home/presentation/widgets/custom_bouttom_navbar.dart';
 import 'package:savoir/models/app_colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   SignUpScreen({super.key});
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,24 +69,80 @@ class SignUpScreen extends StatelessWidget {
                   children: [
                     LabelOfTextFeildwidget(label: "Name"),
                     SizedBox(height: 8),
-                    TextFeildwidget(label: "Elias Thorne"),
+                    TextFeildwidget(label: "name", controller: nameController),
                     SizedBox(height: 20),
 
                     LabelOfTextFeildwidget(label: "Email"),
                     SizedBox(height: 8),
-                    TextFeildwidget(label: "reader@cafe.com"),
+                    TextFeildwidget(
+                      label: "reader@cafe.com",
+                      controller: emailController,
+                    ),
                     SizedBox(height: 20),
 
                     LabelOfTextFeildwidget(label: "Password"),
                     SizedBox(height: 8),
-                    TextFeildwidget(label: "••••••••"),
+                    TextFeildwidget(
+                      label: "••••••••",
+                      controller: passwordController,
+                    ),
                     SizedBox(height: 30),
 
                     SizedBox(
                       width: double.infinity,
                       height: 55,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          try {
+                            UserCredential userCredential = await FirebaseAuth
+                                .instance
+                                .createUserWithEmailAndPassword(
+                                  email: emailController.text.trim(),
+                                  password: passwordController.text.trim(),
+                                );
+                            String uid = userCredential.user!.uid;
+
+                            await FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(uid)
+                                .set({
+                                  'uid': uid,
+                                  'name': nameController.text.trim(),
+                                  'email': emailController.text.trim(),
+                                  'createdAt': DateTime.now(),
+                                });
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "Account created successfully! Please Sign In.",
+                                ),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CustomBouttomNavBar(),
+                              ),
+                              (route) => false,
+                            );
+                          } on FirebaseAuthException catch (e) {
+                            String errorMessage = "An error occurred";
+                            if (e.code == 'email-already-in-use') {
+                              errorMessage =
+                                  "This email is already registered.";
+                            } else if (e.code == 'weak-password') {
+                              errorMessage = "The password is too weak.";
+                            }
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(errorMessage),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.frsittextColor,
                           shape: RoundedRectangleBorder(
@@ -103,17 +182,24 @@ class SignUpScreen extends StatelessWidget {
                           "Already have an account? ",
                           style: TextStyle(
                             color: Colors.grey,
-                            fontSize: 18,
+                            fontSize: 15,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
                         TextButton(
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginScreen(),
+                              ),
+                            );
+                          },
                           child: Text(
                             "Sign In",
                             style: TextStyle(
                               color: Color(0xFF6B4226),
-                              fontSize: 18,
+                              fontSize: 25,
                               fontWeight: FontWeight.w700,
                             ),
                           ),

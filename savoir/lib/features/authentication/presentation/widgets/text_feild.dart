@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class TextFeildwidget extends StatelessWidget {
-const TextFeildwidget({super.key, required this.label});
+  const TextFeildwidget({super.key, required this.label, this.controller});
   final String label;
+  final TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       decoration: InputDecoration(
         hintText: label,
         filled: true,

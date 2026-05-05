@@ -3,12 +3,15 @@ import 'package:savoir/features/profile/presentation/screens/setting_screen.dart
 import 'package:savoir/features/profile/presentation/widgets/custom_profile_streak.dart';
 import 'package:savoir/features/reading_fatures/presentation/widgets/custom_drawer.dart';
 import 'package:savoir/models/app_colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final String uid = FirebaseAuth.instance.currentUser!.uid;
     return Scaffold(
       drawer: CustomDrawer(),
       backgroundColor: AppColors.background,
@@ -48,102 +51,123 @@ class ProfileScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundImage: AssetImage('assets/images/taylorswift.jfif'),
-            ),
-            SizedBox(height: 10),
-            Text(
-              "Taylor Swift",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              "Lover of classics and historical fiction",
-              style: TextStyle(
-                color: AppColors.greyText,
-                fontStyle: FontStyle.italic,
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+      body: StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .snapshots(),
 
-            SizedBox(height: 20),
-            CustomProfileStreak(title: 'BOOKS READ', value: '24'),
-            SizedBox(height: 20),
-            CustomProfileStreak(title: 'DAY STREAK', value: '12'),
-            SizedBox(height: 20),
-            CustomProfileStreak(title: 'HOURS SPENT', value: '156'),
+        builder: (context, asyncSnapshot) {
+          if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(color: Colors.brown),
+            );
+          }
 
-            SizedBox(height: 35),
+          if (asyncSnapshot.hasError) {
+            return const Center(child: Text("Error loading profile"));
+          }
 
-            ListTile(
-              leading: Icon(
-                Icons.rate_review_outlined,
-                color: AppColors.cardsBackground,
-              ),
-              title: Text(
-                "My Reviews",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-              ),
-              trailing: Icon(Icons.arrow_forward_ios),
-            ),
-            Divider(),
-            ListTile(
-              leading: Icon(
-                Icons.favorite_border,
-                color: AppColors.cardsBackground,
-              ),
-              title: Text(
-                "Favorite Authors",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-              ),
-              trailing: Icon(Icons.arrow_forward_ios),
-            ),
-            Divider(),
-            ListTile(
-              leading: Icon(
-                Icons.emoji_events_outlined,
-                color: AppColors.cardsBackground,
-              ),
-              title: Text(
-                "Achievements",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-              ),
-              trailing: Icon(Icons.arrow_forward_ios),
-            ),
-
-            SizedBox(height: 30),
-
-            Row(
+          var userData = asyncSnapshot.data!.data() as Map<String, dynamic>;
+          String userName = userData['name'] ?? "User";
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Column(
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Ambient Warmth",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Slider(
-                        value: 0.5,
-                        onChanged: (val) {},
-                        activeColor: Colors.brown,
-                      ),
-                    ],
+                CircleAvatar(
+                  radius: 50,
+                  backgroundImage: AssetImage('assets/images/taylorswift.jfif'),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  userName,
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "Lover of classics and historical fiction",
+                  style: TextStyle(
+                    color: AppColors.greyText,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-                Icon(Icons.nightlight_round, color: Colors.brown),
+
+                SizedBox(height: 20),
+                CustomProfileStreak(title: 'BOOKS READ', value: '24'),
+                SizedBox(height: 20),
+                CustomProfileStreak(title: 'DAY STREAK', value: '12'),
+                SizedBox(height: 20),
+                CustomProfileStreak(title: 'HOURS SPENT', value: '156'),
+
+                SizedBox(height: 35),
+
+                ListTile(
+                  leading: Icon(
+                    Icons.rate_review_outlined,
+                    color: AppColors.cardsBackground,
+                  ),
+                  title: Text(
+                    "My Reviews",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+                  trailing: Icon(Icons.arrow_forward_ios),
+                ),
+                Divider(),
+                ListTile(
+                  leading: Icon(
+                    Icons.favorite_border,
+                    color: AppColors.cardsBackground,
+                  ),
+                  title: Text(
+                    "Favorite Authors",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+                  trailing: Icon(Icons.arrow_forward_ios),
+                ),
+                Divider(),
+                ListTile(
+                  leading: Icon(
+                    Icons.emoji_events_outlined,
+                    color: AppColors.cardsBackground,
+                  ),
+                  title: Text(
+                    "Achievements",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+                  trailing: Icon(Icons.arrow_forward_ios),
+                ),
+
+                SizedBox(height: 30),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Ambient Warmth",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Slider(
+                            value: 0.5,
+                            onChanged: (val) {},
+                            activeColor: Colors.brown,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(Icons.nightlight_round, color: Colors.brown),
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

@@ -7,9 +7,24 @@ import 'package:savoir/features/authentication/presentation/widgets/other_way-lo
 import 'package:savoir/features/authentication/presentation/widgets/text_feild.dart';
 import 'package:savoir/features/home/presentation/widgets/custom_bouttom_navbar.dart';
 import 'package:savoir/models/app_colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +94,10 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     LabelOfTextFeildwidget(label: "Email Address"),
                     SizedBox(height: 8),
-                    TextFeildwidget(label: "reader@example.com"),
+                    TextFeildwidget(
+                      label: "reader@example.com",
+                      controller: emailController,
+                    ),
                     SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -108,17 +126,47 @@ class LoginScreen extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 8),
-                    TextFeildwidget(label: "Enter your password"),
+                    TextFeildwidget(
+                      label: "Enter your password",
+                      controller: passwordController,
+                    ),
                     SizedBox(height: 25),
                     ForgetPasswordButtomwidget(
                       lable: 'Sign in',
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CustomBouttomNavBar(),
-                          ),
-                        );
+                      onPressed: () async {
+                        try {
+                          await FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                                email: emailController.text.trim(),
+                                password: passwordController.text.trim(),
+                              );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CustomBouttomNavBar(),
+                            ),
+                          );
+                        } on FirebaseAuthException catch (e) {
+                          String message = "Login Failed";
+                          if (e.code == 'user-not-found') {
+                            message = "No user found for this email.";
+                          } else if (e.code == 'wrong-password') {
+                            message = "Incorrect password.";
+                          }
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(message),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(message),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
                       },
                     ),
                   ],
