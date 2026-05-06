@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savoir/features/profile/presentation/screens/setting_screen.dart';
+import 'package:savoir/features/reading_fatures/presentation/cubits/history_cubit.dart';
 import 'package:savoir/features/reading_fatures/presentation/screens/download_screen.dart';
 import 'package:savoir/features/reading_fatures/presentation/screens/favorites_screen.dart';
 import 'package:savoir/features/reading_fatures/presentation/screens/my_list.dart';
@@ -23,7 +25,7 @@ class _ReadingListState extends State<ReadingList> {
     'Favorites',
   ];
   final List<Widget> pages = [
-    ReadingHistory(),
+    BlocProvider(create: (context) => HistoryCubit()..getHistory(), child: ReadingHistory()),
     MyList(),
     DownloadsScreen(),
     FavoritesScreen(),
