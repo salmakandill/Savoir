@@ -94,68 +94,74 @@ class _GenresScreenState extends State<GenresScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Popular Genres',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.frsittextColor,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'View All',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.cardsBackground,
-                        ),
-                      ),
-                    ),
-                  ],
+                Text(
+                  'Popular Genres',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.frsittextColor,
+                  ),
                 ),
+
                 BlocBuilder<HomeGenresCubit, HomeGenresStates>(
                   builder: (context, state) {
                     if (state is HomeGenresSuccessState) {
+                      final genres = state.allGenres;
                       return SizedBox(
-                        height: 250,
+                        height: 150,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: 10,
+                          itemCount: genres.length,
                           itemBuilder: (context, index) {
-                            return SizedBox(
-                              width: 160,
-                              child: Column(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Image.asset(
-                                      'assets/images/classics.png',
-                                      width: 150,
-                                      height: 200,
-                                      fit: BoxFit.cover,
-                                      errorBuilder:
-                                          (context, error, stackTrace) =>
-                                              const Icon(
-                                                Icons.broken_image,
-                                                size: 35,
-                                              ),
+                            return GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                width: 160,
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 10,
+                                ),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      const Color.fromARGB(255, 192, 129, 90),
+                                      const Color.fromARGB(
+                                        255,
+                                        99,
+                                        64,
+                                        43,
+                                      ).withOpacity(0.7),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Text(
+                                      genres[index][0].toUpperCase() +
+                                          genres[index].substring(1),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        letterSpacing: 1.1,
+                                      ),
                                     ),
                                   ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    'Classics',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      color: AppColors.frsittextColor,
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
                             );
                           },
@@ -200,11 +206,7 @@ class _GenresScreenState extends State<GenresScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => BlocProvider(
-                                    create: (context) => CategoryBooksCubit()
-                                      ..getCategoryList(
-                                        category: state.allGenres[index],
-                                      ),
-
+                                    create: (context) => CategoryBooksCubit(),
                                     child: GeneresDetailesscreen(
                                       title: state.allGenres[index],
                                     ),
