@@ -1,75 +1,88 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:savoir/features/home/data/models/books_model.dart';
 import 'package:savoir/features/home/presentation/Screens/genres_screen.dart';
 import 'package:savoir/features/home/presentation/Screens/home_screen.dart';
-import 'package:savoir/features/home/presentation/cubit/category_cubit.dart';
-import 'package:savoir/features/home/presentation/cubit/home_recommended_cubit.dart';
 import 'package:savoir/features/profile/presentation/screens/profile_screen.dart';
 import 'package:savoir/features/home/presentation/Screens/search_screen.dart';
 import 'package:savoir/models/app_colors.dart';
 
-class CustomBouttomNavBar extends StatelessWidget {
-  CustomBouttomNavBar({super.key, this.booksModel});
+class CustomBouttomNavBar extends StatefulWidget {
   final BooksModel? booksModel;
+
+  const CustomBouttomNavBar({super.key, this.booksModel});
+
+  @override
+  State<CustomBouttomNavBar> createState() => _CustomBouttomNavBarState();
+}
+
+class _CustomBouttomNavBarState extends State<CustomBouttomNavBar> {
+  int _currentIndex = 0;
+
+  final List<Widget> _screens = [
+    HomeScreen(),
+    GenresScreen(),
+    SearchScreen(),
+    ProfileScreen(),
+  ];
+
+  void _onTap(int index) {
+    if (index == _currentIndex) return;
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return PersistentTabView(
-      tabs: [
-        PersistentTabConfig(
-          screen: BlocProvider(
-            create: (context) => HomeCubit()..getBooks(),
-            child: HomeScreen(),
-          ),
-          item: ItemConfig(
-            icon: Icon(Icons.local_library_outlined),
-            iconSize: 30,
-            title: 'LIBRARY',
-            textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-            activeForegroundColor: AppColors.iconsColor,
-            inactiveForegroundColor: Colors.grey,
-          ),
+    return Scaffold(
+      body: IndexedStack(index: _currentIndex, children: _screens),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: _onTap,
+        backgroundColor: Colors.white,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: AppColors.iconsColor,
+        unselectedItemColor: Colors.grey,
+        selectedLabelStyle: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
         ),
-        PersistentTabConfig(
-          screen: BlocProvider(
-            create: (context) => HomeGenresCubit()..fetchAllGenres(),
-            child: GenresScreen(),
-          ),
-          item: ItemConfig(
-            icon: Icon(Icons.menu_book_sharp),
-            iconSize: 30,
-            title: 'DISCOVER',
-            textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-            activeForegroundColor: AppColors.iconsColor,
-            inactiveForegroundColor: Colors.grey,
-          ),
+        unselectedLabelStyle: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
         ),
-        PersistentTabConfig(
-          screen: SearchScreen(),
-          item: ItemConfig(
-            icon: Icon(Icons.search),
-            iconSize: 30,
-            title: 'SEARCH',
-            textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-            activeForegroundColor: AppColors.iconsColor,
-            inactiveForegroundColor: Colors.grey,
+        iconSize: 30,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Padding(
+              padding: EdgeInsets.only(bottom: 4.0),
+              child: Icon(Icons.local_library_outlined),
+            ),
+            label: 'LIBRARY',
           ),
-        ),
-        PersistentTabConfig(
-          screen: ProfileScreen(),
-          item: ItemConfig(
-            icon: Icon(Icons.person_outline),
-            iconSize: 30,
-            title: 'PROFILE',
-            textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-            activeForegroundColor: AppColors.iconsColor,
-            inactiveForegroundColor: Colors.grey,
+          BottomNavigationBarItem(
+            icon: Padding(
+              padding: EdgeInsets.only(bottom: 4.0),
+              child: Icon(Icons.menu_book_sharp),
+            ),
+            label: 'DISCOVER',
           ),
-        ),
-      ],
-      navBarBuilder: (navBarConfig) =>
-          Style1BottomNavBar(navBarConfig: navBarConfig),
+          BottomNavigationBarItem(
+            icon: Padding(
+              padding: EdgeInsets.only(bottom: 4.0),
+              child: Icon(Icons.search),
+            ),
+            label: 'SEARCH',
+          ),
+          BottomNavigationBarItem(
+            icon: Padding(
+              padding: EdgeInsets.only(bottom: 4.0),
+              child: Icon(Icons.person_outline),
+            ),
+            label: 'PROFILE',
+          ),
+        ],
+      ),
     );
   }
 }

@@ -168,7 +168,7 @@ class DetailsScreen extends StatelessWidget {
                             book: BooksModel(
                               id: booksList[index].id,
                               title: booksList[index].title,
-                              imageUrl: booksList[index].image,
+                              imageUrl: booksList[index].imageUrl,
                             ),
                           ),
                     );

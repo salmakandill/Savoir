@@ -1,5 +1,7 @@
 // main.dart
 import 'package:firebase_core/firebase_core.dart';
+import 'package:savoir/features/authentication/presentation/screens/splash_screen.dart';
+import 'package:savoir/features/home/presentation/cubit/category_cubit.dart';
 import 'package:savoir/features/home/presentation/Screens/genres_screen.dart';
 import 'package:savoir/features/profile/presentation/screens/setting_screen.dart';
 import 'package:flutter/material.dart';
@@ -22,12 +24,15 @@ class Savoir extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Newsreader'),
-      home: BlocProvider(
-        create: (context) => HomeCubit()..getBooks(),
-        child: GenresScreen(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => HomeCubit()..getBooks()),
+        BlocProvider(create: (context) => HomeGenresCubit()..fetchAllGenres()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(fontFamily: 'Newsreader'),
+        home: SplashScreen(),
       ),
     );
   }

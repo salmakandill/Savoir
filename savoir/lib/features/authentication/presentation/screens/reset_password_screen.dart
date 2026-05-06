@@ -17,11 +17,14 @@ class ResetPasswordScreen extends StatefulWidget {
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+  final TextEditingController oldPasswordController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
 
+  @override
   void dispose() {
+    oldPasswordController.dispose();
     newPasswordController.dispose();
     confirmPasswordController.dispose();
     super.dispose();
@@ -96,7 +99,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 ),
                 SizedBox(height: 30),
                 Container(
-                  height: 350,
+                  height: 424,
                   margin: EdgeInsets.symmetric(horizontal: 30),
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -112,6 +115,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 10),
+                      LabelOfTextFeildwidget(label: 'CURRENT PASSWORD'),
+                      SizedBox(height: 8),
+                      TextFeildpasswordwidget(
+                        controller: oldPasswordController,
+                        icon: Icons.lock_outline,
+                        hintText: 'current password',
+                      ),
+                      SizedBox(height: 30),
                       LabelOfTextFeildwidget(label: 'NEW PASSWORD'),
                       SizedBox(height: 8),
                       TextFeildpasswordwidget(
@@ -119,7 +130,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         icon: Icons.lock_outline,
                         hintText: 'new password',
                       ),
-                      SizedBox(height: 50),
+                      SizedBox(height: 30),
                       LabelOfTextFeildwidget(label: 'CONFIRM PASSWORD'),
                       SizedBox(height: 8),
                       TextFeildpasswordwidget(
@@ -129,45 +140,104 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       ),
                       SizedBox(height: 30),
                       ForgetPasswordButtomwidget(
-                        lable: 'Reset Password',
+                        lable: 'Change Password',
                         onPressed: () async {
-                          log(newPasswordController.text);
+                          if (oldPasswordController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "Please enter your current password.",
+                                ),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                            return;
+                          }
+
+                          if (newPasswordController.text.length < 6) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "Password must be at least 6 characters long.",
+                                ),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                            return;
+                          }
+
                           if (newPasswordController.text ==
                               confirmPasswordController.text) {
                             try {
-                              final user = FirebaseAuth.instance.currentUser;
-                              log(user.toString());
-                              await FirebaseAuth.instance.currentUser!
-                                  .updatePassword(
-                                    newPasswordController.text.trim(),
+                              final user = FirebaseAuth.instance.currentUser!;
+
+                              AuthCredential credential =
+                                  EmailAuthProvider.credential(
+                                    email: user.email!,
+                                    password: oldPasswordController.text.trim(),
                                   );
+
+                              await user.reauthenticateWithCredential(
+                                credential,
+                              );
+
+                              await user.updatePassword(
+                                newPasswordController.text.trim(),
+                              );
 
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
-                                    "Password reset successful! Please log in with your new password.",
+                                    "Password changed successfully! Please log in with your new password.",
                                   ),
                                   backgroundColor: Colors.green,
                                 ),
                               );
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LoginScreen(),
-                                ),
-                              );
+
+                              await FirebaseAuth.instance.signOut();
+
+                              if (context.mounted) {
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoginScreen(),
+                                  ),
+                                  (route) => false,
+                                );
+                              }
+                            } on FirebaseAuthException catch (e) {
+                              String message = e.message ?? "An error occurred";
+                              if (e.code == 'wrong-password') {
+                                message =
+                                    "The current password you entered is incorrect.";
+                              } else if (e.code == 'requires-recent-login') {
+                                message =
+                                    "Please enter your correct current password to verify your identity.";
+                              }
+
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text("Error: $message"),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
                             } catch (e) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text("error: ${e.toString()}"),
-                                ),
-                              );
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text("Error: ${e.toString()}"),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
                             }
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
-                                  "Passwords do not match! Please try again.",
+                                  "New passwords do not match! Please try again.",
                                 ),
                                 backgroundColor: Colors.red,
                               ),
