@@ -4,6 +4,7 @@ import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:savoir/features/home/data/models/books_model.dart';
 import 'package:savoir/features/home/presentation/Screens/genres_screen.dart';
 import 'package:savoir/features/home/presentation/Screens/home_screen.dart';
+import 'package:savoir/features/home/presentation/cubit/category_cubit.dart';
 import 'package:savoir/features/home/presentation/cubit/home_recommended_cubit.dart';
 import 'package:savoir/features/profile/presentation/screens/profile_screen.dart';
 import 'package:savoir/features/home/presentation/Screens/search_screen.dart';
@@ -31,7 +32,10 @@ class CustomBouttomNavBar extends StatelessWidget {
           ),
         ),
         PersistentTabConfig(
-          screen: GenresScreen(),
+          screen: BlocProvider(
+            create: (context) => HomeGenresCubit()..fetchAllGenres(),
+            child: GenresScreen(),
+          ),
           item: ItemConfig(
             icon: Icon(Icons.menu_book_sharp),
             iconSize: 30,
