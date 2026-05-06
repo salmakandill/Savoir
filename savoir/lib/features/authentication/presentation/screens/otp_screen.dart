@@ -1,9 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:savoir/features/authentication/presentation/screens/reset_password_screen.dart';
+import 'package:savoir/features/authentication/presentation/widgets/otp_container.dart';
 import 'package:savoir/features/authentication/presentation/widgets/otp_widgets.dart';
 import 'package:savoir/models/app_colors.dart';
 
-class VerificationScreen extends StatelessWidget {
+class VerificationScreen extends StatefulWidget {
   const VerificationScreen({super.key});
+
+  @override
+  State<VerificationScreen> createState() => _VerificationScreenState();
+}
+
+class _VerificationScreenState extends State<VerificationScreen> {
+  final TextEditingController c1 = TextEditingController();
+  final TextEditingController c2 = TextEditingController();
+  final TextEditingController c3 = TextEditingController();
+  final TextEditingController c4 = TextEditingController();
+  final TextEditingController c5 = TextEditingController();
+  final TextEditingController c6 = TextEditingController();
+
+  void dispose() {
+    c1.dispose();
+    c2.dispose();
+    c3.dispose();
+    c4.dispose();
+    c5.dispose();
+    c6.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +95,14 @@ class VerificationScreen extends StatelessWidget {
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(6, (index) => OtpBox()),
+                children: [
+                  OtpBox(controller: c1),
+                  OtpBox(controller: c2),
+                  OtpBox(controller: c3),
+                  OtpBox(controller: c4),
+                  OtpBox(controller: c5),
+                  OtpBox(controller: c6),
+                ],
               ),
 
               SizedBox(height: 35),
@@ -79,7 +110,38 @@ class VerificationScreen extends StatelessWidget {
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    String fullCode =
+                        c1.text +
+                        c2.text +
+                        c3.text +
+                        c4.text +
+                        c5.text +
+                        c6.text;
+                    if (fullCode == "123456") {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ResetPasswordScreen(),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            "Invalid verification code! Please  again.",
+                          ),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ResetPasswordScreen(),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.cardsBackground,
                     elevation: 0,
@@ -125,7 +187,7 @@ class VerificationScreen extends StatelessWidget {
               ),
               SizedBox(height: 50),
 
-              SecurityNoticeCard(),
+              OtpContainer(),
               SizedBox(height: 30),
             ],
           ),

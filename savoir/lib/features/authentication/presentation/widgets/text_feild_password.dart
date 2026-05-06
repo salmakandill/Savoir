@@ -6,12 +6,15 @@ class TextFeildpasswordwidget extends StatelessWidget {
     super.key,
     required this.icon,
     required this.hintText,
+    this.controller,
   });
   final IconData icon;
   final String hintText;
+  final TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       decoration: InputDecoration(
         filled: true,
         fillColor: AppColors.containercolor.withOpacity(0.1),

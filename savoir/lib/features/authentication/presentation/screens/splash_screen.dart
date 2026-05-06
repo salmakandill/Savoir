@@ -29,13 +29,8 @@ class SplashScreen extends StatelessWidget {
                 children: [
                   Spacer(flex: 2),
                   CircleAvatar(
-                    backgroundColor: AppColors.iconsColor,
+                    backgroundImage: AssetImage('assets/images/icon.jpeg'),
                     radius: 70,
-                    child: Icon(
-                      Icons.auto_stories_outlined,
-                      size: 80,
-                      color: Colors.white,
-                    ),
                   ),
                   SizedBox(height: 20),
                   Text(
@@ -116,3 +111,4 @@ class SplashScreen extends StatelessWidget {
     );
   }
 }
+//

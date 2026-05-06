@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:savoir/features/details/data/models/book_details_model.dart';
 import 'package:savoir/models/app_colors.dart';
 
 class BookDetailswidget extends StatelessWidget {
-  const BookDetailswidget({super.key});
+  const BookDetailswidget({super.key, required this.book});
+  final BookDetailsModel book;
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +15,9 @@ class BookDetailswidget extends StatelessWidget {
       ),
       child: Row(
         children: [
-          buildInfoItem("pages", " 435"),
+          buildInfoItem("pages", book.pages ?? "Unknown"),
           buildDivider(),
-          buildInfoItem("Language", "English"),
-          buildDivider(),
-          buildInfoItem("Audio", "12h 4m"),
+          buildInfoItem("Language", book.language ?? "Unknown"),
         ],
       ),
     );

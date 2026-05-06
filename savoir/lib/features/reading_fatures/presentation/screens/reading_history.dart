@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:savoir/features/details/presentation/cubits/book_details_cubit/also_like_cubit.dart';
+import 'package:savoir/features/details/presentation/cubits/book_details_cubit/details_cubit.dart';
 import 'package:savoir/features/details/presentation/screens/details_screen.dart';
 import 'package:savoir/features/details/presentation/screens/reading_screen.dart';
 import 'package:savoir/features/reading_fatures/presentation/cubits/history_cubit.dart';
@@ -49,12 +51,12 @@ class _ReadingHistoryState extends State<ReadingHistory> {
                         height: 310,
                         child: GestureDetector(
                           onTap: () {
-                             Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailsScreen(),
-                            ),
-                          );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ReadingScreen(),
+                              ),
+                            );
                           },
                           child: ListView.separated(
                             scrollDirection: Axis.horizontal,
@@ -63,7 +65,7 @@ class _ReadingHistoryState extends State<ReadingHistory> {
                                 SizedBox(width: 20),
                             itemBuilder: (context, index) {
                               final bookitem = books[index];
-                          
+
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -118,24 +120,30 @@ class _ReadingHistoryState extends State<ReadingHistory> {
 
                       SizedBox(height: 12),
 
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ReadingScreen(),
-                            ),
-                          );
-                        },
-                        child: ListView.separated(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: books.length,
-                          separatorBuilder: (context, index) =>
-                              SizedBox(height: 20),
-                          itemBuilder: (context, index) {
-                            final book = books[index];
-                            return Row(
+                      ListView.separated(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: books.length,
+                        separatorBuilder: (context, index) =>
+                            SizedBox(height: 20),
+                        itemBuilder: (context, index) {
+                          final book = books[index];
+                          return GestureDetector(
+                            onTap: () {
+                              context.read<DetailsCubit>().getBookDetails(
+                                id: book.id,
+                              );
+                              context.read<AlsoLikeCubit>().getSimilarBooks(
+                                id: book.id,
+                              );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DetailsScreen(),
+                                ),
+                              );
+                            },
+                            child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 ClipRRect(
@@ -183,9 +191,9 @@ class _ReadingHistoryState extends State<ReadingHistory> {
                                   ),
                                 ),
                               ],
-                            );
-                          },
-                        ),
+                            ),
+                          );
+                        },
                       ),
                     ],
                   );
