@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savoir/features/home/presentation/cubit/category_cubit.dart';
 import 'package:savoir/features/home/presentation/cubit/category_states.dart';
+import 'package:savoir/features/home/presentation/cubit/details_genres_cubit.dart';
+import 'package:savoir/features/home/presentation/screens/generes_details_screen.dart';
 import 'package:savoir/features/profile/presentation/screens/setting_screen.dart';
 import 'package:savoir/features/reading_fatures/presentation/widgets/custom_drawer.dart';
 import 'package:savoir/models/app_colors.dart';
@@ -116,41 +118,56 @@ class _GenresScreenState extends State<GenresScreen> {
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 250,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
+                BlocBuilder<HomeGenresCubit, HomeGenresStates>(
+                  builder: (context, state) {
+                    if (state is HomeGenresSuccessState) {
                       return SizedBox(
-                        width: 160,
-                        child: Column(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Image.asset(
-                                'assets/images/classics.png',
-                                width: 150,
-                                height: 200,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    const Icon(Icons.broken_image, size: 35),
+                        height: 250,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 10,
+                          itemBuilder: (context, index) {
+                            return SizedBox(
+                              width: 160,
+                              child: Column(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: Image.asset(
+                                      'assets/images/classics.png',
+                                      width: 150,
+                                      height: 200,
+                                      fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              const Icon(
+                                                Icons.broken_image,
+                                                size: 35,
+                                              ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    'Classics',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.frsittextColor,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              'Classics',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.frsittextColor,
-                              ),
-                            ),
-                          ],
+                            );
+                          },
                         ),
                       );
-                    },
-                  ),
+                    } else if (state is HomeGenresLoadingState) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is HomeGenresFailureState) {
+                      return Center(child: Text(state.errorMessage));
+                    }
+                    return const SizedBox.shrink();
+                  },
                 ),
                 const SizedBox(height: 35),
                 Text(
@@ -168,39 +185,58 @@ class _GenresScreenState extends State<GenresScreen> {
                       return GridView.builder(
                         itemCount: state.allGenres.length,
                         shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: 1.2,
-                              crossAxisSpacing: 15,
-                              mainAxisSpacing: 15,
-                            ),
+                        physics: NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 1.2,
+                          crossAxisSpacing: 15,
+                          mainAxisSpacing: 15,
+                        ),
                         itemBuilder: (context, index) {
-                          return Container(
-                            decoration: BoxDecoration(
-                              color: const Color(0xffEBE4DB),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.auto_stories_outlined,
-                                  color: AppColors.cardsBackground,
-                                  size: 35,
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  state.allGenres[index],
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.iconsColor,
+                          return InkWell(
+                            onTap: () {
+                              log('Tapped on genre: ${state.allGenres[index]}');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BlocProvider(
+                                    create: (context) => CategoryBooksCubit()
+                                      ..getCategoryList(
+                                        category: state.allGenres[index],
+                                      ),
+
+                                    child: GeneresDetailesscreen(
+                                      title: state.allGenres[index],
+                                    ),
                                   ),
                                 ),
-                              ],
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: const Color(0xffEBE4DB),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.auto_stories_outlined,
+                                    color: AppColors.cardsBackground,
+                                    size: 35,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    state.allGenres[index],
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.iconsColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           );
                         },

@@ -34,12 +34,18 @@ class RemoteDataSourceOfHome {
     return _fallbackGenres();
   }
 
-  Future<List<BooksModel>> getCategoryList({required String category}) async {
+  static Future<List<BooksModel>> getCategoryList({
+    required String category,
+  }) async {
     try {
       List<BooksModel> categoryList = [];
       final response = await dio.get(
         'https://api.bigbookapi.com/search-books',
-        queryParameters: {'api-key': apiKey, 'genres': category},
+        queryParameters: {
+          'api-key': apiKey,
+          'categories': category,
+          'number': 20,
+        },
       );
 
       for (var element in response.data["books"]) {
