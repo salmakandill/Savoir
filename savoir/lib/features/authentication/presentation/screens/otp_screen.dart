@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:savoir/features/authentication/presentation/screens/login_screen.dart';
 import 'package:savoir/features/authentication/presentation/screens/reset_password_screen.dart';
 import 'package:savoir/features/authentication/presentation/widgets/otp_container.dart';
 import 'package:savoir/features/authentication/presentation/widgets/otp_widgets.dart';
 import 'package:savoir/models/app_colors.dart';
 
 class VerificationScreen extends StatefulWidget {
-  const VerificationScreen({super.key});
-
+  const VerificationScreen({super.key, required this.email});
+  final String email;
   @override
   State<VerificationScreen> createState() => _VerificationScreenState();
 }
@@ -118,29 +119,40 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         c4.text +
                         c5.text +
                         c6.text;
-                    if (fullCode == "123456") {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ResetPasswordScreen(),
+
+                    if (fullCode.length == 6) {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text(
+                            "Verified Successfully",
+                            style: TextStyle(color: AppColors.cardsBackground),
+                          ),
+                          content: Text(
+                            "Your identity has been confirmed. Please check your email (${widget.email}) to set your new password.",
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(
+                                  context,
+                                ).popUntil((route) => route.isFirst);
+                              },
+                              child: const Text("Back to Login"),
+                            ),
+                          ],
                         ),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
-                            "Invalid verification code! Please  again.",
+                            "Invalid verification code! Please try again.",
                           ),
                           backgroundColor: Colors.red,
                         ),
                       );
                     }
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ResetPasswordScreen(),
-                      ),
-                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.cardsBackground,

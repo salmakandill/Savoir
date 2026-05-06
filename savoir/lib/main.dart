@@ -1,5 +1,6 @@
 // main.dart
 import 'package:firebase_core/firebase_core.dart';
+import 'package:savoir/features/profile/presentation/screens/setting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savoir/features/home/presentation/Screens/home_screen.dart';
