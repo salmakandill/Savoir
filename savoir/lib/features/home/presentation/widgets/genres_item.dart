@@ -15,22 +15,25 @@ class GenresItemwidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      margin: const EdgeInsets.only(right: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      decoration: BoxDecoration(
-        color: isSelected
-            ? AppColors.frsittextColor
-            : AppColors.containercolor2,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        'All',
-        style: TextStyle(
-          color: isSelected ? AppColors.background : AppColors.frsittextColor,
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        alignment: Alignment.center,
+        margin: const EdgeInsets.only(right: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? AppColors.frsittextColor
+              : AppColors.containercolor2,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          title,
+          style: TextStyle(
+            color: isSelected ? AppColors.background : AppColors.frsittextColor,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );
