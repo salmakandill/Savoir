@@ -5,6 +5,7 @@ import 'package:savoir/features/details/presentation/screens/details_screen.dart
 import 'package:savoir/features/home/presentation/screens/home_screen.dart';
 import 'package:savoir/features/authentication/presentation/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:savoir/features/profile/presentation/screens/setting_screen.dart';
 import 'firebase_options.dart';
 
 void main() async {

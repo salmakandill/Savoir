@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:savoir/features/authentication/presentation/screens/login_screen.dart';
+import 'package:savoir/features/authentication/presentation/screens/reset_password_screen.dart';
 import 'package:savoir/features/reading_fatures/presentation/widgets/custom_choicecip.dart';
 import 'package:savoir/models/app_colors.dart';
 
@@ -134,11 +135,11 @@ class SettingScreen extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.notifications_none_outlined,
+                    Icons.lock_reset_outlined,
                     color: AppColors.cardsBackground,
                   ),
                   title: Text(
-                    "Notification Preferences",
+                    "Reset Password",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -146,6 +147,40 @@ class SettingScreen extends StatelessWidget {
                     ),
                   ),
                   trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () async {
+                    try {
+                      await FirebaseAuth.instance.sendPasswordResetEmail(
+                        email: userData['email'],
+                      );
+
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              "Password reset link sent to ${userData['email']}",
+                            ),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ResetPasswordScreen(),
+                          ),
+                        );
+                      }
+                    } catch (e) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Error: ${e.toString()}"),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    }
+                  },
                 ),
 
                 SizedBox(height: 50),
