@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:savoir/error_handler.dart';
 import 'package:savoir/features/home/data/models/books_model.dart';
+import 'package:savoir/features/home/data/models/category_model.dart';
 
 class RemoteDataSourceOfHome {
   static final Dio dio = Dio();
@@ -26,6 +27,18 @@ class RemoteDataSourceOfHome {
       return books;
     } on Exception catch (e) {
       throw ErrorHandler.handle(e).failure.message;
+    }
+  }
+
+  static Future<List<String>> getAllGenres() async {
+    try {
+      final response = await dio.get(
+        'https://api.bigbookapi.com/genres',
+        queryParameters: {'api-key': apiKey},
+      );
+      return GenreModel.fromJson(response.data).genres;
+    } catch (e) {
+      throw Exception('حدث خطأ أثناء جلب التصنيفات');
     }
   }
 }

@@ -136,7 +136,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                               confirmPasswordController.text) {
                             try {
                               final user = FirebaseAuth.instance.currentUser;
-                              log(  user.toString()); 
+                              log(user.toString());
                               await FirebaseAuth.instance.currentUser!
                                   .updatePassword(
                                     newPasswordController.text.trim(),

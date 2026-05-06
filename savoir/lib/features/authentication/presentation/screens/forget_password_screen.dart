@@ -118,7 +118,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => VerificationScreen(),
+                            builder: (context) => VerificationScreen(
+                              email: emailController.text.trim(),
+                            ),
                           ),
                         );
                       } on FirebaseException catch (e) {
