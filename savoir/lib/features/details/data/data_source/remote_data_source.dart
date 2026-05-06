@@ -1,6 +1,8 @@
+// features/details/data/data_source/remote_data_source.dart
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:savoir/error_handler.dart';
 import 'package:savoir/features/details/data/models/also_liked_books_model.dart';
 import 'package:savoir/features/details/data/models/book_details_model.dart';
 
@@ -29,12 +31,9 @@ class RemoteDataSource {
       );
       log("Book Loaded: ${book.title}");
       return book;
-    } on DioException catch (e) {
-      log("Dio Error: ${e.response?.data}");
-      throw Exception("Error: ${e.response?.data}");
-    } catch (e) {
-      log("General Error: $e");
-      throw Exception("Error: $e");
+    } on Exception catch (e) {
+      log("Dio Error: ${e}");
+      throw ErrorHandler.handle(e).failure.message;
     }
   }
 
@@ -53,10 +52,10 @@ class RemoteDataSource {
       return similarBooks;
     } on DioException catch (e) {
       log("Error: ${e.response?.data}");
-      throw Exception("Error: ${e.response?.data}");
+      throw ErrorHandler.handle(e).failure.message;
     } on Exception catch (e) {
       log("Error: $e");
-      throw Exception("Error: $e");
+      throw ErrorHandler.handle(e).failure.message;
     }
   }
 }

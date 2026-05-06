@@ -1,13 +1,13 @@
+// features/details/data/models/also_liked_books_model.dart
 class AlsoLikedBooksModel {
   final int id;
-  final String? title;
-  final String? category;
+  final String? title,subtitle;
   final String? image;
 
   AlsoLikedBooksModel({
     required this.id,
     this.title,
-    this.category,
+    this.subtitle,
     this.image,
   });
 
@@ -15,8 +15,8 @@ class AlsoLikedBooksModel {
     return AlsoLikedBooksModel(
       id: json['id'],
       title: json['title'],
-      category: json['category'],
-      image: json['image_url'] ?? '',
+      subtitle: json['subtitle'],
+      image: json['image'] ?? '',
     );
   }
 }

@@ -1,15 +1,17 @@
+// features/home/presentation/Screens/home_screen.dart
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:savoir/features/details/data/models/also_liked_books_model.dart';
-import 'package:savoir/features/details/data/models/book_details_model.dart';
 import 'package:savoir/features/home/presentation/cubit/home_recommended_cubit.dart';
 import 'package:savoir/features/home/presentation/cubit/home_states_recommended.dart';
 import 'package:savoir/features/home/presentation/widgets/build_card.dart';
 import 'package:savoir/features/home/presentation/widgets/genres_item.dart';
 import 'package:savoir/features/reading_fatures/presentation/widgets/custom_drawer.dart';
 import 'package:savoir/models/app_colors.dart';
-import '../widgets/build_continue_reading_card.dart';
+
 import '../widgets/build_card_of_recommended_for_you.dart';
+import '../widgets/build_continue_reading_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -110,7 +112,7 @@ class HomeScreen extends StatelessWidget {
                     return Center(child: CircularProgressIndicator());
                   } else if (state is HomeSuccessState) {
                     final booksList = state.books;
-
+                    log("Books List: ${booksList.length} items");
                     return GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -124,11 +126,7 @@ class HomeScreen extends StatelessWidget {
                       itemCount: booksList.length,
                       itemBuilder: (context, index) =>
                           BuildCardOfRecommendedForYouwidget(
-                            book: BookDetailsModel(
-                              id: state.books[index].id,
-                              title: state.books[index].title,
-                              image: state.books[index].imageUrl,
-                            ),
+                            book: booksList[index],
                           ),
                     );
                   } else if (state is HomeFailureState) {
