@@ -1,17 +1,17 @@
+// features/home/presentation/widgets/build_card_of_recommended_for_you.dart
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:savoir/features/details/data/models/also_liked_books_model.dart';
-import 'package:savoir/features/details/data/models/book_details_model.dart';
 import 'package:savoir/features/details/presentation/cubits/book_details_cubit/also_like_cubit.dart';
 import 'package:savoir/features/details/presentation/cubits/book_details_cubit/details_cubit.dart';
 import 'package:savoir/features/details/presentation/screens/details_screen.dart';
+import 'package:savoir/features/home/data/models/books_model.dart';
 import 'package:savoir/models/app_colors.dart';
 
 class BuildCardOfRecommendedForYouwidget extends StatelessWidget {
-  BuildCardOfRecommendedForYouwidget({super.key, this.book});
-  final BookDetailsModel? book;
+  const BuildCardOfRecommendedForYouwidget({super.key, this.book});
+  final BooksModel? book;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -51,11 +51,24 @@ class BuildCardOfRecommendedForYouwidget extends StatelessWidget {
                 child: Stack(
                   children: [
                     Image.network(
-                      book?.image ?? "",
+                      book?.imageUrl ?? "",
                       height: double.infinity,
                       width: double.infinity,
                       fit: BoxFit.cover,
-
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Container(
+                          color: Colors.grey[300],
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          ),
+                        );
+                      },
                       errorBuilder: (context, error, stackTrace) {
                         return Container(
                           color: Colors.grey[300],
@@ -104,7 +117,7 @@ class BuildCardOfRecommendedForYouwidget extends StatelessWidget {
 
             SizedBox(height: 4),
             Text(
-              book?.authorname ?? "",
+              book?.authors ?? "",
               style: TextStyle(color: AppColors.thirdTextColor, fontSize: 13),
             ),
           ],

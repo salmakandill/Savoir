@@ -1,6 +1,8 @@
+// features/home/data/data_source/remote_data_source_of_home.dart
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:savoir/error_handler.dart';
 import 'package:savoir/features/home/data/models/books_model.dart';
 
 class RemoteDataSourceOfHome {
@@ -23,7 +25,7 @@ class RemoteDataSourceOfHome {
       log(books.length.toString());
       return books;
     } on Exception catch (e) {
-      throw Exception('Failed to load books: $e');
+      throw ErrorHandler.handle(e).failure.message;
     }
   }
 }

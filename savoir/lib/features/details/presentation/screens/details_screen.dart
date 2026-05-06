@@ -1,7 +1,6 @@
+// features/details/presentation/screens/details_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:savoir/features/details/data/models/also_liked_books_model.dart';
-import 'package:savoir/features/details/data/models/book_details_model.dart';
 import 'package:savoir/features/details/presentation/cubits/book_details_cubit/also_like_cubit.dart';
 import 'package:savoir/features/details/presentation/cubits/book_details_cubit/also_like_cubit_status.dart';
 import 'package:savoir/features/details/presentation/cubits/book_details_cubit/book_details_cubit_status.dart';
@@ -9,13 +8,13 @@ import 'package:savoir/features/details/presentation/cubits/book_details_cubit/d
 import 'package:savoir/features/details/presentation/widgets/book_details.dart';
 import 'package:savoir/features/details/presentation/widgets/book_details_publish_pages_number.dart';
 import 'package:savoir/features/details/presentation/widgets/build_book_header_of_details.dart';
-import 'package:savoir/features/details/presentation/widgets/item_of_genres.dart';
+import 'package:savoir/features/home/data/models/books_model.dart';
 import 'package:savoir/features/home/presentation/widgets/build_card_of_recommended_for_you.dart';
 import 'package:savoir/models/app_colors.dart';
 
 class DetailsScreen extends StatelessWidget {
-  const DetailsScreen({super.key, this.book});
-  final BookDetailsModel? book;
+  const DetailsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -166,10 +165,10 @@ class DetailsScreen extends StatelessWidget {
                       itemCount: booksList.length,
                       itemBuilder: (context, index) =>
                           BuildCardOfRecommendedForYouwidget(
-                            book: BookDetailsModel(
-                              id: state.books[index].id,
-                              title: state.books[index].title,
-                              image: state.books[index].image,
+                            book: BooksModel(
+                              id: booksList[index].id,
+                              title: booksList[index].title,
+                              imageUrl: booksList[index].image,
                             ),
                           ),
                     );
