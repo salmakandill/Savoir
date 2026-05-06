@@ -5,16 +5,17 @@ class DownloadAndListButtomwidget extends StatelessWidget {
   const DownloadAndListButtomwidget({
     super.key,
     required this.icon,
-    required this.label,
+    required this.label, this.onPressed,
   });
 
   final IconData icon;
   final String label;
+  final void Function()? onPressed ;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
-      onPressed: () {},
+      onPressed: onPressed,
       icon: Icon(icon, size: 20, color: const Color(0xff8D4F1D)),
       label: Text(
         label,

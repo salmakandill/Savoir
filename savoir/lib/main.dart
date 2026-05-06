@@ -10,15 +10,17 @@ import 'package:savoir/features/home/presentation/screens/home_screen.dart';
 import 'package:savoir/features/authentication/presentation/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:savoir/features/reading_fatures/data/services/data_source/history_keeper.dart';
+import 'package:savoir/features/reading_fatures/data/services/data_source/mylist_keeper.dart';
 import 'package:savoir/features/reading_fatures/presentation/cubits/history_cubit.dart';
+import 'package:savoir/features/reading_fatures/presentation/cubits/my_list_cubit.dart';
 import 'firebase_options.dart';
 
 void main() async {
   //await FirebaseAuth.instance.signOut();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  WidgetsFlutterBinding.ensureInitialized();
   await HistoryKeeper.init();
+  await MylistKeeper.init();
   runApp(
     MultiBlocProvider(
     providers: [
@@ -26,6 +28,7 @@ void main() async {
       BlocProvider(create: (context) => HistoryCubit()),
       BlocProvider(create: (context) => DetailsCubit()),
       BlocProvider(create: (context) => AlsoLikeCubit()),
+      BlocProvider(create: (context) => MyListCubit()), 
     ],
       child :Savoir()));
 }

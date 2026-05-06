@@ -6,7 +6,7 @@ import 'package:savoir/features/details/data/models/book_details_model.dart';
 
 class RemoteDataSource {
   final Dio dio = Dio();
-  final String apiKey = '8c5e236c99ad43d388d25d5320eb1fff';
+  final String apiKey = 'e78d951b9548409d850c584f45bac680';
 
   Future<BookDetailsModel> getBookById({required int bookId}) async {
     try {
