@@ -3,12 +3,12 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:savoir/error_handler.dart';
-import 'package:savoir/features/details/data/models/also_liked_books_model.dart';
 import 'package:savoir/features/details/data/models/book_details_model.dart';
+import 'package:savoir/features/home/data/models/books_model.dart';
 
 class RemoteDataSource {
   final Dio dio = Dio();
-  final String apiKey = '4bef8484869948d38f3e987a2c52f98c';
+  final String apiKey = 'e78d951b9548409d850c584f45bac680';
 
   Future<BookDetailsModel> getBookById({required int bookId}) async {
     try {
@@ -37,16 +37,16 @@ class RemoteDataSource {
     }
   }
 
-  Future<List<AlsoLikedBooksModel>> getSimilarBooks({required int id}) async {
+  Future<List<BooksModel>> getSimilarBooks({required int id}) async {
     try {
-      List<AlsoLikedBooksModel> similarBooks = [];
+      List<BooksModel> similarBooks = [];
       final response = await dio.get(
         'https://api.bigbookapi.com/$id/similar',
         queryParameters: {'api-key': apiKey},
       );
 
       for (var element in response.data["similar_books"]) {
-        AlsoLikedBooksModel book = AlsoLikedBooksModel.fromJson(element);
+        BooksModel book = BooksModel.getfromjson(element);
         similarBooks.add(book);
       }
       return similarBooks;
