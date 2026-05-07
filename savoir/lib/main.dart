@@ -1,22 +1,38 @@
-// main.dart
-import 'package:firebase_core/firebase_core.dart';
-import 'package:savoir/features/authentication/presentation/screens/splash_screen.dart';
-import 'package:savoir/features/home/presentation/cubit/category_cubit.dart';
-import 'package:savoir/features/home/presentation/Screens/genres_screen.dart';
-import 'package:savoir/features/profile/presentation/screens/setting_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:savoir/features/home/presentation/Screens/home_screen.dart';
+import 'package:savoir/features/authentication/presentation/screens/sign_up_screen.dart';
+import 'package:savoir/features/details/presentation/cubits/book_details_cubit/also_like_cubit.dart';
+import 'package:savoir/features/details/presentation/cubits/book_details_cubit/details_cubit.dart';
+import 'package:savoir/features/details/presentation/screens/details_screen.dart';
+import 'package:savoir/features/home/presentation/cubit/category_cubit.dart';
 import 'package:savoir/features/home/presentation/cubit/home_recommended_cubit.dart';
-
+import 'package:savoir/features/home/presentation/screens/home_screen.dart';
+import 'package:savoir/features/authentication/presentation/screens/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:savoir/features/reading_fatures/data/services/data_source/history_keeper.dart';
+import 'package:savoir/features/reading_fatures/data/services/data_source/mylist_keeper.dart';
+import 'package:savoir/features/reading_fatures/presentation/cubits/history_cubit.dart';
+import 'package:savoir/features/reading_fatures/presentation/cubits/my_list_cubit.dart';
 import 'firebase_options.dart';
 
 void main() async {
   //await FirebaseAuth.instance.signOut();
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(Savoir());
+  await HistoryKeeper.init();
+  await MylistKeeper.init();
+  runApp(
+    MultiBlocProvider(
+    providers: [
+      BlocProvider(create: (context) => HomeCubit()..getBooks()),
+        BlocProvider(create: (context) => HomeGenresCubit()..fetchAllGenres()), 
+      BlocProvider(create: (context) => HistoryCubit()),
+      BlocProvider(create: (context) => DetailsCubit()),
+      BlocProvider(create: (context) => AlsoLikeCubit()),
+      BlocProvider(create: (context) => MyListCubit()), 
+    ],
+      child :Savoir()));
 }
 
 class Savoir extends StatelessWidget {
@@ -24,16 +40,10 @@ class Savoir extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => HomeCubit()..getBooks()),
-        BlocProvider(create: (context) => HomeGenresCubit()..fetchAllGenres()),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(fontFamily: 'Newsreader'),
-        home: SplashScreen(),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(fontFamily: 'Newsreader'),
+      home: SplashScreen(),
     );
   }
 }

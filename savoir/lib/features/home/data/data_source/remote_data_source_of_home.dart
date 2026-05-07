@@ -8,7 +8,7 @@ import 'package:savoir/features/home/data/models/category_model.dart';
 
 class RemoteDataSourceOfHome {
   static final Dio dio = Dio();
-  static final String apiKey = 'e78d951b9548409d850c584f45bac680';
+  static final String apiKey = '3218fbe240d34b208a9df580cba3c69b';
   static Future<List<BooksModel>> getBooks() async {
     try {
       final response = await dio.get(

@@ -1,6 +1,7 @@
 // features/details/presentation/screens/details_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:savoir/features/details/data/models/book_details_model.dart';
 import 'package:savoir/features/details/presentation/cubits/book_details_cubit/also_like_cubit.dart';
 import 'package:savoir/features/details/presentation/cubits/book_details_cubit/also_like_cubit_status.dart';
 import 'package:savoir/features/details/presentation/cubits/book_details_cubit/book_details_cubit_status.dart';
@@ -13,8 +14,8 @@ import 'package:savoir/features/home/presentation/widgets/build_card_of_recommen
 import 'package:savoir/models/app_colors.dart';
 
 class DetailsScreen extends StatelessWidget {
-  const DetailsScreen({super.key});
-
+  const DetailsScreen({super.key, this.book});
+  final BookDetailsModel? book;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
